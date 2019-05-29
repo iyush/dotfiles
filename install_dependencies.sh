@@ -20,6 +20,7 @@ dependencies=(
     'texlive'                                           # For tex files
     'texlive-lacheck'                                   # TeX files linting
     'syncthing'                                         # for file sync
+    'stow'                                              # gnu stow
 )
 polybarDependencies=(
     'cmake' 
