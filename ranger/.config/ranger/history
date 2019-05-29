@@ -1,0 +1,40 @@
+load_copy_buffer 
+save_copy_buffer 
+rename aayush_mcdonalds_cv.pdf
+rename cover_letter_mcDonalds.pdf
+shell vim Makefile
+rename .fonts
+w
+rename config.bak
+shell vim config
+open_with emacs25
+rename p4
+open_with zathura
+search thunder
+open_with code
+find c
+find e
+find polybar
+rename lab2_2
+rename .vim
+search .vim
+
+rename main.tex
+search docu
+rename nvim
+open_with nvim
+delete
+open_with mupdf
+find 10
+nohl
+rename (Springer Undergraduate Mathematics Series) Shmuel Kantorovitz (auth.) - Several Real Variables-Springer International Publishing (2016)qq.pdf
+open_with evim
+e
+rename labReport2_2.pdf
+open_with evince
+rename
+rename LAB2_3.pdf
+open_with gtkvim
+open_with gvim
+open_with emacs
+open_with 

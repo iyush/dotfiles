@@ -1,0 +1,325 @@
+#+TITLE: Emacs Configuration
+#+AUTHOR: Aayush Acharya
+#+STARTUP: indent hidestars
+
+** Essential Packages
+I am using =use-packages= for managing all the packages. This is my first time using it.
+*** Show parenthesis
+#+BEGIN_SRC emacs-lisp
+(show-paren-mode +1)
+#+END_SRC
+*** Blink Cursor disable
+#+BEGIN_SRC emacs-lisp
+;; (blink-cursor-mode -1)
+#+END_SRC
+*** PDF tools-install
+#+BEGIN_SRC emacs-lisp
+(use-package pdf-tools
+:ensure t
+:config
+    (progn
+        (add-hook 'pdf-view-mode-hook (lambda () (display-line-numbers-mode -1)))
+        (add-hook 'pdf-view-mode-hook (blink-cursor-mode -1))
+        (pdf-tools-install)
+    )
+)
+#+END_SRC
+*** Try
+Try enables me to demo quick emacs packages without the need to install one.
+#+BEGIN_SRC emacs-lisp
+(use-package try
+:ensure t)
+#+END_SRC
+*** which-key
+Which-key to lookup for follow-up keys
+#+BEGIN_SRC emacs-lisp
+   (use-package which-key
+   :ensure t
+   :config (which-key-mode))
+#+END_SRC
+*** auto-complete
+#+BEGIN_SRC emacs-lisp
+(use-package auto-complete
+:ensure t
+:init
+(progn
+(ac-config-default)
+(global-auto-complete-mode t)))
+#+END_SRC
+*** Load Nepali keyboard layout
+नेपाली कीबोर्ड चालुको लागी ‍=<C-\>= दाब्ने।
+#+BEGIN_SRC emacs-lisp
+    (load "~/.emacs.d/lisp/nepali-romanized.el")
+#+END_SRC
+*** Emacs kill confirmation
+#+BEGIN_SRC emacs-lisp :asd 
+        (setq confirm-kill-emacs 'yes-or-no-p)
+#+END_SRC
+*** Ranger
+My favourite file browser
+#+BEGIN_SRC emacs-lisp
+(use-package ranger
+:ensure t
+:config
+(global-set-key (kbd "C-x d") 'ranger)
+)
+#+END_SRC
+** Emacs Auto Save and Backups
+I do not want emacs clogging up my directories with auto save and backup files. I also do not want to disable the feature outright, but I do want to move it somewhere else.
+The best place to move those would be to =~/.emacs.d/auto-save= for auto save files and =~/.emacs.d/backups= for backup files.
+#+BEGIN_SRC emacs-lisp
+        (setq auto-save-file-name-transforms
+            `((".*" ,(concat user-emacs-directory "auto-save/") t)))
+        (setq backup-directory-alist
+            `(("." . ,(expand-file-name
+                        (concat user-emacs-directory "backups")))))
+#+END_SRC
+** Key Shortcuts
+*** EVIL
+I use evil mode because of I am afraid of RSI, plus I come from vim so its natural and it is efiencient for me.
+I also remap my =j= to =gj= and =k= to =gk= in vim sense, so I move up and down in terms of visual line and not actual lines.
+#+BEGIN_SRC emacs-lisp
+        (use-package evil
+        :ensure t
+        :config
+        (evil-mode 1)
+        (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
+        (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line))
+#+END_SRC
+*** IVY, SWIPER AND COUNSEL
+IVY keybindings for =M-x= (launcher), finding files, buffer list. Swiper as =i-search= replacement and counsel for (i dont know) 
+#+BEGIN_SRC emacs-lisp
+(use-package ivy
+:ensure t)
+(use-package counsel
+:ensure t)
+(use-package swiper
+:ensure t
+:config
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (setq enable-recursive-minibuffers t)
+    ;; enable this if you want `swiper' to use it
+    ;; (setq search-default-mode #'char-fold-to-regexp)
+    ;; (global-set-key "\C-s" 'swiper)
+    (global-set-key (kbd "C-c C-r") 'ivy-resume)
+    (global-set-key (kbd "<f6>") 'ivy-resume)
+    (global-set-key (kbd "M-x") 'counsel-M-x)
+    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+    (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+    (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+    (global-set-key (kbd "<f1> l") 'counsel-find-library)
+    (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+    (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+    (global-set-key (kbd "C-c g") 'counsel-git)
+    (global-set-key (kbd "C-c j") 'counsel-git-grep)
+    (global-set-key (kbd "C-c k") 'counsel-ag)
+    (global-set-key (kbd "C-x l") 'counsel-locate)
+    (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+    (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+)
+#+END_SRC
+*** Resize windows
+Using simpler windows resize bindings =<space-ctrl-directionArrows>= than the default k-eybindings.
+#+BEGIN_SRC emacs-lisp
+        (global-set-key (kbd "s-C-<left>") 'shrink-window-horizontally)
+        (global-set-key (kbd "s-C-<right>") 'enlarge-window-horizontally)
+        (global-set-key (kbd "s-C-<down>") 'shrink-window)
+        (global-set-key (kbd "s-C-<up>") 'enlarge-window)
+#+END_SRC
+
+*** Configuration file
+Open configuration file using quick keyboard bindings
+#+BEGIN_SRC emacs-lisp
+        (defun asa/open-config ()
+        (interactive)
+        (find-file "~/.emacs.d/configuration.org"))
+        (global-set-key (kbd "C-x c") 'asa/open-config)
+#+END_SRC
+** Small Packages
+** Visuals
+*** Dont want the start up messages and the banner so hide them.
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-message t
+      inhibit-startup-echo-area-message t)
+#+END_SRC
+*** Smooth scrolling, 
+albeit not as good as in native windows, atleast it is not dizzying with abrupt screen changes when using my touchpad(which I usually do)
+#+BEGIN_SRC emacs-lisp
+        ;; (use-package smooth-scroll
+        ;; :ensure t
+        ;; :config
+        ;; (smooth-scroll-mode t))
+#+END_SRC
+
+*** Conservative Scrolling
+When point goes outside the window, Emacs usually recenters the buffer point. I’m not crazy about that. This changes scrolling behavior to only scroll as far as point goes.
+#+BEGIN_SRC emacs-lisp
+        (setq scroll-conservatively 100)
+#+END_SRC
+*** No tool bars, no menu bars and no scroll bars.
+#+BEGIN_SRC emacs-lisp
+        (tool-bar-mode -1)
+        (menu-bar-mode -1)
+        (scroll-bar-mode -1)
+#+END_SRC
+*** Remove unnecessary audio bells, add visual flash instead (could remove it in future)
+#+BEGIN_SRC emacs-lisp
+        ;(setq-default visible-bell t)
+        (setq ring-bell-function 'ignore)
+#+END_SRC
+*** By default display line numbers on all buffers. Works only on =emacs>26.0=
+#+BEGIN_SRC emacs-lisp
+        (global-display-line-numbers-mode 1)
+#+END_SRC
+*** Change Line spacing
+By default change line spacing to 0.1 . 0.1 does not do anything, I sometimes change it to 0.5 .
+#+BEGIN_SRC emacs-lisp
+        (setq-default line-spacing 0.1)
+#+END_SRC
+*** Fonts
+#+BEGIN_SRC emacs-lisp
+(custom-set-faces
+ '(default ((t (:family "Inconsolata" :slant normal :weight normal :height 130 :width normal))))
+ )
+#+END_SRC
+*** Theme
+Light theme (solarized-theme-light) and dark theme (solarized-theme-dark) according to time of the day (9 - 18 light and otherwise dark)
+Functions for enabling light theme or dark theme or theme-according to the time of the day
+#+BEGIN_SRC emacs-lisp
+(defun asa/dark-theme()
+    (interactive)
+    (use-package solarized-theme
+        :ensure t
+        :config
+        (disable-theme 'solarized-light)
+        (load-theme 'solarized-dark t)
+    )
+)
+(defun asa/light-theme ()
+    (interactive)
+    (use-package solarized-theme
+        :ensure t
+        :config
+        (disable-theme 'solarized-dark)
+        (load-theme 'solarized-light t)
+    )
+)
+(defun asa/time-theme () 
+    (interactive)
+    (if (and (< (string-to-number (format-time-string "%-H")) 22) (> (string-to-number (format-time-string "%-H")) 9))
+        (asa/light-theme)
+        (asa/dark-theme)
+    )
+)
+#+END_SRC
+Activate the following theme
+#+BEGIN_SRC emacs-lisp
+(asa/dark-theme)
+#+END_SRC
+*** Powerline
+Better mode line
+#+BEGIN_SRC emacs-lisp
+(use-package powerline-evil                ;;Install powerline-evil
+    :ensure t)
+
+(use-package powerline
+    :ensure t
+    :config
+    (progn
+    (require 'powerline)
+    (powerline-evil-vim-color-theme)))
+#+END_SRC
+
+#+RESULTS:
+: t
+
+** Helm
+#+BEGIN_SRC emacs-lisp
+;;	(helm-external-programs-associations '(("pdf" . "evince")))
+#+END_SRC
+** Web Mode
+Web mode for php, blade and html files
+#+BEGIN_SRC emacs-lisp
+        (require 'web-mode)
+        (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
+        (setq web-mode-engines-alist
+            '(("php"    . "\\.phtml\\'")
+            ("blade"  . "\\.blade\\.")
+            ("html"   . "\\.html\\.")))
+#+END_SRC
+** Org
+[[https://zzamboni.org/post/beautifying-org-mode-in-emacs/][Copied from]]
+*** Custom variables
+#+BEGIN_SRC emacs-lisp
+(custom-set-variables
+     '(org-directory "~/Sync/orgfiles")
+     '(org-default-notes-file (concat org-directory "/notes.org"))
+     '(org-export-html-postamble nil)
+     '(org-hide-leading-stars t)
+     '(org-startup-indented t)
+     '(org-confirm-babel-evaluate nil)
+     '(org-src-fontify-natively t)
+     )
+#+END_SRC
+*** Open pdf in evince (requires evince)
+#+BEGIN_SRC emacs-lisp
+(setq org-file-apps
+      (append '(
+               ("\\.pdf\\'". "evince %s")
+               ) org-file-apps))
+#+END_SRC
+*** Org inline Images Size
+#+BEGIN_SRC emacs-lisp
+(setq org-image-actual-width nil)
+#+END_SRC
+*** Disable Line Number for org-mode
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1)))
+#+END_SRC
+*** Change ... to arrows
+#+BEGIN_SRC emacs-lisp
+   (setq org-ellipsis "⤵")
+#+END_SRC
+*** Configure faces for Org headlines and lists
+First, we ask org-mode to hide the emphasis markup (e.g. /.../ for italics, *...* for bold, etc.):
+#+BEGIN_SRC emacs-lisp
+    (setq org-hide-emphasis-markers t)
+#+END_SRC
+
+The org-bullets package replaces all headline markers with different Unicode bullets
+#+BEGIN_SRC emacs-lisp
+    (use-package org-bullets
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+#+END_SRC
+*** Use long lines and visual-line-mode
+With =visual-line-mode= enabled, long lines will flow and adjust to the width of the window.
+#+BEGIN_SRC emacs-lisp
+            (add-hook 'org-mode-hook 'visual-line-mode)
+#+END_SRC
+** Projectile
+#+BEGIN_SRC emacs-lisp
+        (use-package projectile
+        :config
+        (projectile-mode +1)
+        (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+        (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+#+END_SRC
+** Flycheck
+#+BEGIN_SRC emacs-lisp
+        (use-package flycheck
+        :config
+        (add-hook 'after-init-hook #'global-flycheck-mode))
+#+END_SRC
+** AucTex
+#+BEGIN_SRC emacs-lisp
+        (setq TeX-parse-self t)
+        (setq TeX-auto-save t)
+        (setq TeX-PDF-mode t)
+#+END_SRC
+** Other Custom files
+#+BEGIN_SRC emacs-lisp
+        (setq custom-file "~/.emacs.d/custom.el")
+        (load custom-file)
+#+END_SRC
