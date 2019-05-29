@@ -1,6 +1,7 @@
+# emacs
 /emacs/.emacs.d/ac-comphist.dat
-/emacs/.emacs.d/auto-save-list/.saves-9362-tilda~
-/emacs/.emacs.d/backups/!home!tilda!dotfiles!emacs!.emacs.d!custom.el~
+/emacs/.emacs.d/auto-save-list/
+/emacs/.emacs.d/backups/
 /emacs/.emacs.d/configuration.el
 /emacs/.emacs.d/custom.el
 /emacs/.emacs.d/elpa/
