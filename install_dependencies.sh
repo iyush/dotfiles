@@ -22,6 +22,7 @@ dependencies=(
     'syncthing'                                         # for file sync
     'stow'                                              # gnu stow
 )
+
 polybarDependencies=(
     'cmake' 
     'gcc-c++'
@@ -53,3 +54,10 @@ fi
 
 echo
 echo "Installation complete"
+echo
+read -p "Do you want to setup all the config files? [Y/n] " response
+if [ ! $response -o $response = 'y' -o $response = 'Y' ]
+then
+    chmod +x ./install_config.sh
+    ./install_config.sh
+fi
