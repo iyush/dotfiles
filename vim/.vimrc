@@ -1,7 +1,7 @@
 " Download vim plug if not available
-"
+
 set nocompatible
-if ! filereadable(expand('~/.vim/autoload/plug.vim'))
+if !filereadable(expand('~/.vim/autoload/plug.vim'))
 	echo "Downloading junegunn/vim-plug to manage plugins..."
 	silent !mkdir -p ~/.vim/autoload/
 	silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ~/.vim/autoload/plug.vim
@@ -9,14 +9,14 @@ endif
 
 " start vim plug
 call plug#begin('~/.vim/plugged')
-Plug 'lervag/vimtex'                " For Latex Files
-Plug 'tpope/vim-surround'           " For parenthesis manipulations
-Plug 'scrooloose/syntastic'         " for syntax checking
-Plug 'scrooloose/nerdtree'          " nerd-tree
-Plug 'ajh17/spacegray.vim'          " color scheme
-Plug 'vim-scripts/L9'               " for fuzzy finder
-" Plug 'vim-scripts/FuzzyFinder'
-" Plug 'valloric/youcompleteme'       " completion auto
+Plug 'lervag/vimtex'                                     " For Latex Files
+Plug 'tpope/vim-surround'                                " For parenthesis manipulations
+Plug 'scrooloose/syntastic'                              " for syntax checking
+Plug 'scrooloose/nerdtree'                               " nerd-tree
+Plug 'ajh17/spacegray.vim'                               " color scheme
+Plug 'vim-scripts/L9'                                    " for fuzzy finder
+" Plug 'valloric/youcompleteme'                          " completion auto
+Plug 'neoclide/coc.nvim', {'branch': 'release'}          " conquer of completion code
 call plug#end()
 
 " Fuzzy finder
@@ -29,9 +29,6 @@ let maplocalleader=","
 " Omni completion
 filetype plugin on
 set omnifunc=syntaxComplete#Complete
-
-" colorscheme
-colorscheme spacegray
 
 " Font
 set guifont=Operator\ Mono\ 12
@@ -81,4 +78,3 @@ let g:vimtex_compiler_latexmk = {
     \   '-interaction=nonstopmode',
     \ ],
     \}
-
