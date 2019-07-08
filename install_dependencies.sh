@@ -21,6 +21,7 @@ dependencies=(
     'texlive-lacheck'                                   # TeX files linting
     'syncthing'                                         # for file sync
     'stow'                                              # gnu stow
+    'lxappearance'                                      # lxappearance
 )
 
 polybarDependencies=(
@@ -38,6 +39,11 @@ polybarDependencies=(
 )
 # Fedora package manager
 sudo dnf install ${dependencies[@]}
+
+# Development Tools
+sudo dnf groupinstall "Development Tools"
+sudo dnf groupinstall "C Development Tools"
+
 echo 
 #echo "Do you want to install Polybar? [Y/n]"
 read -p "Do you want to install Polybar? [Y/n] " response

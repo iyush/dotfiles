@@ -2,11 +2,16 @@
 #+AUTHOR: Aayush Acharya
 #+STARTUP: indent hidestars
 
+
 ** Essential Packages
 I am using =use-packages= for managing all the packages. This is my first time using it.
 *** Show parenthesis
 #+BEGIN_SRC emacs-lisp
 (show-paren-mode +1)
+#+END_SRC
+*** Auto paren close using electric-pair-mode
+#+BEGIN_SRC emacs-lisp
+(electric-pair-mode t)
 #+END_SRC
 *** Blink Cursor disable
 #+BEGIN_SRC emacs-lisp
@@ -39,12 +44,12 @@ Which-key to lookup for follow-up keys
 #+END_SRC
 *** auto-complete
 #+BEGIN_SRC emacs-lisp
-(use-package auto-complete
-:ensure t
-:init
-(progn
-(ac-config-default)
-(global-auto-complete-mode t)))
+  ;; (use-package auto-complete
+  ;; :ensure t
+  ;; :init
+  ;; (progn
+  ;; (ac-config-default)
+  ;; (global-auto-complete-mode t)))
 #+END_SRC
 *** Load Nepali keyboard layout
 नेपाली कीबोर्ड चालुको लागी ‍=<C-\>= दाब्ने।
@@ -75,7 +80,7 @@ I do not want emacs clogging up my directories with auto save and backup files. 
 The best place to move those would be to =~/.emacs.d/auto-save= for auto save files and =~/.emacs.d/backups= for backup files.
 #+BEGIN_SRC emacs-lisp
         (setq auto-save-file-name-transforms
-            `((".*" ,(concat user-emacs-directory "auto-save/") t)))
+            `((".*" ,(concat user-emacs-directory "auto-save-list/") t)))
         (setq backup-directory-alist
             `(("." . ,(expand-file-name
                         (concat user-emacs-directory "backups")))))
@@ -107,7 +112,7 @@ IVY keybindings for =M-x= (launcher), finding files, buffer list. Swiper as =i-s
     (setq enable-recursive-minibuffers t)
     ;; enable this if you want `swiper' to use it
     ;; (setq search-default-mode #'char-fold-to-regexp)
-    ;; (global-set-key "\C-s" 'swiper)
+    (global-set-key "\C-s" 'swiper-isearch)
     (global-set-key (kbd "C-c C-r") 'ivy-resume)
     (global-set-key (kbd "<f6>") 'ivy-resume)
     (global-set-key (kbd "M-x") 'counsel-M-x)
@@ -144,6 +149,15 @@ Open configuration file using quick keyboard bindings
 #+END_SRC
 ** Small Packages
 ** Visuals
+*** Highlight Indentations
+#+BEGIN_SRC emacs-lisp
+(use-package highlight-indent-guides
+:ensure t
+:config
+(highlight-indent-guides-mode t)
+(setq highlight-indent-guides-method 'character))
+(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+#+END_SRC
 *** Dont want the start up messages and the banner so hide them.
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-startup-message t
@@ -186,7 +200,7 @@ By default change line spacing to 0.1 . 0.1 does not do anything, I sometimes ch
 *** Fonts
 #+BEGIN_SRC emacs-lisp
 (custom-set-faces
- '(default ((t (:family "Inconsolata" :slant normal :weight normal :height 130 :width normal))))
+ '(default ((t (:family "Inconsolata" :slant normal :weight bold :height 140 :width normal))))
  )
 #+END_SRC
 *** Theme
@@ -195,11 +209,11 @@ Functions for enabling light theme or dark theme or theme-according to the time 
 #+BEGIN_SRC emacs-lisp
 (defun asa/dark-theme()
     (interactive)
-    (use-package solarized-theme
+    (use-package atom-one-dark-theme
         :ensure t
         :config
         (disable-theme 'solarized-light)
-        (load-theme 'solarized-dark t)
+        (load-theme 'atom-one-dark t)
     )
 )
 (defun asa/light-theme ()
@@ -207,7 +221,7 @@ Functions for enabling light theme or dark theme or theme-according to the time 
     (use-package solarized-theme
         :ensure t
         :config
-        (disable-theme 'solarized-dark)
+        (disable-theme 'atom-dark-theme)
         (load-theme 'solarized-light t)
     )
 )
@@ -229,16 +243,16 @@ Better mode line
 (use-package powerline-evil                ;;Install powerline-evil
     :ensure t)
 
+(use-package airline-themes
+:ensure t)
+
 (use-package powerline
     :ensure t
-    :config
-    (progn
-    (require 'powerline)
-    (powerline-evil-vim-color-theme)))
+    :config 
+    (airline-themes-set-modeline)
+    (load-theme 'airline-dark t)
+)
 #+END_SRC
-
-#+RESULTS:
-: t
 
 ** Helm
 #+BEGIN_SRC emacs-lisp
@@ -255,10 +269,33 @@ Web mode for php, blade and html files
             '(("php"    . "\\.phtml\\'")
             ("blade"  . "\\.blade\\.")
             ("html"   . "\\.html\\.")))
+            (add-hook 'web-mode-hook ; or whatever the mode-hook is for your mode of choice
+            (lambda ()
+                (flymake-eslint-enable)))
 )
 #+END_SRC
 ** Org
 [[https://zzamboni.org/post/beautifying-org-mode-in-emacs/][Copied from]]
+*** Ox-koma-letter
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/lisp")
+(eval-after-load 'ox '(require 'ox-koma-letter))
+(eval-after-load 'ox-koma-letter
+  '(progn
+     (add-to-list 'org-latex-classes
+                  '("my-letter"
+                    "\\documentclass\{scrlttr2\}
+     \\usepackage[english]{babel}
+     \\setkomavar{frombank}{(1234)\\,567\\,890}
+     \[DEFAULT-PACKAGES]
+     \[PACKAGES]
+     \[EXTRA]"))
+
+     (setq org-koma-letter-default-class "my-letter")))
+
+(eval-after-load 'ox-latex
+  '(add-to-list 'org-latex-packages-alist '("AUTO" "babel" t) t))
+#+END_SRC
 *** Custom variables
 #+BEGIN_SRC emacs-lisp
 (custom-set-variables
@@ -331,4 +368,45 @@ With =visual-line-mode= enabled, long lines will flow and adjust to the width of
 #+BEGIN_SRC emacs-lisp
         (setq custom-file "~/.emacs.d/custom.el")
         (load custom-file)
+#+END_SRC
+** Company Mode
+*** Initialization
+#+BEGIN_SRC emacs-lisp
+(use-package company
+:ensure t
+:config
+(add-hook 'after-init-hook 'global-company-mode)
+(setq company-idle-delay 0)                       ;; Optional options
+(setq comapny-minimum-prefix-length 3))
+(with-eval-after-load 'company
+    (define-key company-active-map (kbd "M-n" ) nil )
+    (define-key company-active-map (kbd "M-p" ) nil )
+    (define-key company-active-map (kbd "C-n" ) #'company-select-next)
+    (define-key company-active-map (kbd "C-p" ) #'company-select-previous)
+)
+#+END_SRC
+*** Irony for C++, C and Objective-C
+#+BEGIN_SRC emacs-lisp
+(use-package irony
+:ensure t
+:config
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+
+(use-package company-irony
+:ensure t
+:config
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-irony))
+)
+
+(use-package company-irony-c-headers
+:ensure t
+:config 
+(eval-after-load 'company
+     '(add-to-list
+       'company-backends '(company-irony-c-headers company-irony)))
+)
 #+END_SRC
