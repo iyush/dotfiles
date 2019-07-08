@@ -22,6 +22,12 @@ dependencies=(
     'syncthing'                                         # for file sync
     'stow'                                              # gnu stow
     'lxappearance'                                      # lxappearance
+    'npm'						# Node package Manager 
+    'node'						# Node.js
+)
+
+npmEssentials=(
+    'tern'			                        # Tern for emacs javascript
 )
 
 polybarDependencies=(
@@ -43,6 +49,9 @@ sudo dnf install ${dependencies[@]}
 # Development Tools
 sudo dnf groupinstall "Development Tools"
 sudo dnf groupinstall "C Development Tools"
+
+# npm
+sudo npm install ${npmEssentials[@]}
 
 echo 
 #echo "Do you want to install Polybar? [Y/n]"
