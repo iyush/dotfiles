@@ -88,12 +88,12 @@ The best place to move those would be to =~/.emacs.d/auto-save= for auto save fi
 I use evil mode because of I am afraid of RSI, plus I come from vim so its natural and it is efiencient for me.
 I also remap my =j= to =gj= and =k= to =gk= in vim sense, so I move up and down in terms of visual line and not actual lines.
 #+BEGIN_SRC emacs-lisp
-        (use-package evil
-        :ensure t
-        :config
-        (evil-mode 1)
-        (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
-        (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line))
+        ;(use-package evil
+        ;:ensure t
+        ;:config
+        ;(evil-mode 1)
+        ;(define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
+        ;(define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line))
 #+END_SRC
 *** IVY, SWIPER AND COUNSEL
 IVY keybindings for =M-x= (launcher), finding files, buffer list. Swiper as =i-search= replacement and counsel for (i dont know) 
@@ -196,10 +196,11 @@ By default change line spacing to 0.1 . 0.1 does not do anything, I sometimes ch
         (setq-default line-spacing 0.1)
 #+END_SRC
 *** Fonts
+Commented breaks portability
 #+BEGIN_SRC emacs-lisp
-(custom-set-faces
- '(default ((t (:family "Inconsolata" :slant normal :weight bold :height 140 :width normal))))
- )
+;(custom-set-faces
+ ;'(default ((t (:family "Inconsolata" :slant normal :weight bold :height 140 :width normal))))
+ ;)
 #+END_SRC
 *** Theme
 Light theme (solarized-theme-light) and dark theme (solarized-theme-dark) according to time of the day (9 - 18 light and otherwise dark)
@@ -236,20 +237,18 @@ Activate the following theme
 (asa/dark-theme)
 #+END_SRC
 *** Powerline
-Better mode line
+Better mode line (Commented breaks portability)
 #+BEGIN_SRC emacs-lisp
-(use-package powerline-evil                ;;Install powerline-evil
-    :ensure t)
-
-(use-package airline-themes
-:ensure t)
-
-(use-package powerline
-    :ensure t
-    :config 
-    (airline-themes-set-modeline)
-    (load-theme 'airline-dark t)
-)
+;(use-package powerline-evil                ;;Install powerline-evil
+    ;:ensure t)
+;(use-package airline-themes
+;:ensure t)
+;(use-package powerline
+    ;:ensure t
+    ;:config 
+    ;(airline-themes-set-modeline)
+    ;(load-theme 'airline-dark t)
+;)
 #+END_SRC
 
 ** Helm
@@ -331,11 +330,12 @@ First, we ask org-mode to hide the emphasis markup (e.g. /.../ for italics, *...
     (setq org-hide-emphasis-markers t)
 #+END_SRC
 
+(Removed for now as breaks portability)
 The org-bullets package replaces all headline markers with different Unicode bullets
 #+BEGIN_SRC emacs-lisp
-    (use-package org-bullets
-    :config
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  ;; (use-package org-bullets
+  ;; :config
+  ;; (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 #+END_SRC
 *** Use long lines and visual-line-mode
 With =visual-line-mode= enabled, long lines will flow and adjust to the width of the window.
@@ -343,18 +343,20 @@ With =visual-line-mode= enabled, long lines will flow and adjust to the width of
             (add-hook 'org-mode-hook 'visual-line-mode)
 #+END_SRC
 ** Projectile
+(Commented for as it breaks portability)
 #+BEGIN_SRC emacs-lisp
-        (use-package projectile
-        :config
-        (projectile-mode +1)
-        (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-        (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+  ;; (use-package projectile
+  ;; :config
+  ;; (projectile-mode +1)
+  ;; (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  ;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 #+END_SRC
 ** Flycheck
+(Commented as it breaks portability)
 #+BEGIN_SRC emacs-lisp
-        (use-package flycheck
-        :config
-        (add-hook 'after-init-hook #'global-flycheck-mode))
+  ;; (use-package flycheck
+  ;; :config
+  ;; (add-hook 'after-init-hook #'global-flycheck-mode))
 #+END_SRC
 ** AucTex
 #+BEGIN_SRC emacs-lisp
