@@ -188,11 +188,10 @@ When point goes outside the window, Emacs usually recenters the buffer point. Iâ
 #+END_SRC
 *** By default display line numbers on all buffers. Works only on =emacs>26.0=
 #+BEGIN_SRC emacs-lisp
-(if (version< emacs-version "26")
-(eval (message "Cannot enable global-display-line-numbers-mode emacs version less than 26.0")
-      (global-linum-mode 1))
-(global-display-line-numbers-mode 1))
-
+  ;; (if (version< emacs-version "26")
+  ;; (eval (message "Cannot enable global-display-line-numbers-mode emacs version less than 26.0")
+  ;;       (global-linum-mode 1))
+  ;; (global-display-line-numbers-mode 1))
 #+END_SRC
 *** Change Line spacing
 By default change line spacing to 0.1 . 0.1 does not do anything, I sometimes change it to 0.5 .
@@ -200,11 +199,10 @@ By default change line spacing to 0.1 . 0.1 does not do anything, I sometimes ch
         (setq-default line-spacing 0.1)
 #+END_SRC
 *** Fonts
-Commented breaks portability
 #+BEGIN_SRC emacs-lisp
-;(custom-set-faces
- ;'(default ((t (:family "Inconsolata" :slant normal :weight bold :height 140 :width normal))))
- ;)
+(custom-set-faces
+ '(default ((t (:family "Monaco" :slant normal :weight bold :height 110 :width normal))))
+)
 #+END_SRC
 *** Theme
 Light theme (solarized-theme-light) and dark theme (solarized-theme-dark) according to time of the day (9 - 18 light and otherwise dark)
@@ -238,7 +236,8 @@ Functions for enabling light theme or dark theme or theme-according to the time 
 #+END_SRC
 Activate the following theme
 #+BEGIN_SRC emacs-lisp
-(asa/dark-theme)
+; (asa/dark-theme)
+(load-theme 'wheatgrass)
 #+END_SRC
 *** Powerline
 Better mode line (Commented breaks portability)
@@ -254,7 +253,6 @@ Better mode line (Commented breaks portability)
     ;(load-theme 'airline-dark t)
 ;)
 #+END_SRC
-
 ** Helm
 #+BEGIN_SRC emacs-lisp
 ;;	(helm-external-programs-associations '(("pdf" . "evince")))
