@@ -15,7 +15,7 @@ Plug 'scrooloose/syntastic'                              " for syntax checking
 Plug 'scrooloose/nerdtree'                               " nerd-tree
 Plug 'ajh17/spacegray.vim'                               " color scheme
 Plug 'vim-scripts/L9'                                    " for fuzzy finder
-" Plug 'valloric/youcompleteme'                          " completion auto
+"Plug 'valloric/youcompleteme'                          " completion auto
 Plug 'neoclide/coc.nvim', {'branch': 'release'}          " conquer of completion code
 call plug#end()
 
@@ -31,7 +31,7 @@ filetype plugin on
 set omnifunc=syntaxComplete#Complete
 
 " Font
-set guifont=Operator\ Mono\ 12
+set guifont=Source\ Code\ Pro\ 12
 
 " GVIM
 set guioptions-=m                   " hide menubar
@@ -43,9 +43,6 @@ nnoremap k gk
 
 " clipboard
 set clipboard+=unnamedplus
-nnoremap y "+y
-vnoremap y "+y
-nnoremap p "+p
 
 syntax enable
 
@@ -64,7 +61,6 @@ set lazyredraw
 
 filetype indent on      " load filetype-specific indent files
 nnoremap <leader><space> :nohlsearch<CR>
-
 
 " vimtex specific for minted
 
