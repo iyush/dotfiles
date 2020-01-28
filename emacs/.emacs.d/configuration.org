@@ -88,12 +88,12 @@ The best place to move those would be to =~/.emacs.d/auto-save= for auto save fi
 I use evil mode because of I am afraid of RSI, plus I come from vim so its natural and it is efiencient for me.
 I also remap my =j= to =gj= and =k= to =gk= in vim sense, so I move up and down in terms of visual line and not actual lines.
 #+BEGIN_SRC emacs-lisp
-        ;(use-package evil
-        ;:ensure t
-        ;:config
-        ;(evil-mode 1)
-        ;(define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
-        ;(define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line))
+  (use-package evil
+  :ensure t
+  :config
+  (evil-mode 1)
+  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line))
 #+END_SRC
 *** IVY, SWIPER AND COUNSEL
 IVY keybindings for =M-x= (launcher), finding files, buffer list. Swiper as =i-search= replacement and counsel for (i dont know) 
@@ -201,7 +201,7 @@ By default change line spacing to 0.1 . 0.1 does not do anything, I sometimes ch
 *** Fonts
 #+BEGIN_SRC emacs-lisp
 (custom-set-faces
- '(default ((t (:family "Monaco" :slant normal :weight bold :height 110 :width normal))))
+ '(default ((t (:family "Source Code Pro Regular" :slant normal :weight bold :height 110 :width normal))))
 )
 #+END_SRC
 *** Theme
@@ -467,3 +467,12 @@ xref-js2 adds support for quickly jumping to function definitions or references 
   ;; (define-key tern-mode-keymap (kbd "M-,") nil)
 )
 #+END_SRC
+** Python IDE, Elpy
+(use-package elpy
+:ensure t
+:init
+(advice-add 'python-mode :before 'elpy-enable)
+:config
+(setq python-shell-interpreter "python"
+      python-shell-interpreter-args "-i")
+)
