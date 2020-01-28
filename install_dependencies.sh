@@ -85,7 +85,7 @@ then
     echo -e "${F_BOLD}${C_YELLOW}Detected OS: FEDORA ${NO_FORMAT}"
     echo
     echo -e "${F_BOLD}${C_YELLOW}Installing packages for Fedora. ${NO_FORMAT}"
-    dnf install ${dependencies[@]}
+    dnf install ${fedora_dependencies[@]}
 
     # Development Tools
     echo -e "${F_BOLD}${C_YELLOW}Installing developement tools for Fedora. ${NO_FORMAT}"
