@@ -1,4 +1,4 @@
-#+TITLE: Emacs Configuration
+TITLE: Emacs Configuration
 #+AUTHOR: Aayush Acharya
 #+STARTUP: indent hidestars
 ** Essential Packages
@@ -161,15 +161,6 @@ Open configuration file using quick keyboard bindings
 (setq inhibit-startup-message t
       inhibit-startup-echo-area-message t)
 #+END_SRC
-*** Smooth scrolling, 
-albeit not as good as in native windows, atleast it is not dizzying with abrupt screen changes when using my touchpad(which I usually do)
-#+BEGIN_SRC emacs-lisp
-        ;; (use-package smooth-scroll
-        ;; :ensure t
-        ;; :config
-        ;; (smooth-scroll-mode t))
-#+END_SRC
-
 *** Conservative Scrolling
 When point goes outside the window, Emacs usually recenters the buffer point. I’m not crazy about that. This changes scrolling behavior to only scroll as far as point goes.
 #+BEGIN_SRC emacs-lisp
@@ -468,6 +459,7 @@ xref-js2 adds support for quickly jumping to function definitions or references 
 )
 #+END_SRC
 ** Python IDE, Elpy
+#+BEGIN_SRC emacs-lisp
 (use-package elpy
 :ensure t
 :init
@@ -476,3 +468,4 @@ xref-js2 adds support for quickly jumping to function definitions or references 
 (setq python-shell-interpreter "python"
       python-shell-interpreter-args "-i")
 )
+#+END_SRC
