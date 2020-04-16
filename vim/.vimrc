@@ -11,17 +11,27 @@ endif
 call plug#begin('~/.vim/plugged')
 Plug 'lervag/vimtex'                                     " For Latex Files
 Plug 'tpope/vim-surround'                                " For parenthesis manipulations
-Plug 'scrooloose/syntastic'                              " for syntax checking
+"Plug 'scrooloose/syntastic'                              " for syntax checking
+Plug 'dense-analysis/ale'                               " async syntax checking
 Plug 'scrooloose/nerdtree'                               " nerd-tree
-Plug 'ajh17/spacegray.vim'                               " color scheme
+Plug 'tomasr/molokai'                                   " color scheme
 Plug 'vim-scripts/L9'                                    " for fuzzy finder
 "Plug 'valloric/youcompleteme'                          " completion auto
 Plug 'neoclide/coc.nvim', {'branch': 'release'}          " conquer of completion code
+Plug 'posva/vim-vue'                                    " vue mode
 call plug#end()
 
 " Fuzzy finder
 set path+=**
 set wildmenu
+
+" set underscore as word break
+set iskeyword-=_
+
+" mouse mode
+set mouse=a
+colorscheme molokai
+" let g:molokai_original = 1
 
 let mapleader=","
 let maplocalleader=","
@@ -29,6 +39,14 @@ let maplocalleader=","
 " Omni completion
 filetype plugin on
 set omnifunc=syntaxComplete#Complete
+
+
+" Set incremental search to be on
+set incsearch
+
+" Ignore case when searching
+set ignorecase
+
 
 " Font
 set guifont=Source\ Code\ Pro\ 12
@@ -74,3 +92,8 @@ let g:vimtex_compiler_latexmk = {
     \   '-interaction=nonstopmode',
     \ ],
     \}
+
+" Vue and ALE you need to install vim-vue and eslint 
+" (sudo npm i -g eslint eslint-plugin-vue)
+let g:ale_linter_aliases = {'vue': ['vue', 'javascript']}
+let g:ale_linters = {'vue': ['eslint', 'vls']}

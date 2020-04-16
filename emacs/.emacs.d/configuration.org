@@ -188,11 +188,13 @@ When point goes outside the window, Emacs usually recenters the buffer point. Iâ
 #+END_SRC
 *** By default display line numbers on all buffers. Works only on =emacs>26.0=
 #+BEGIN_SRC emacs-lisp
-  ;; (if (version< emacs-version "26")
-  ;; (eval (message "Cannot enable global-display-line-numbers-mode emacs version less than 26.0")
-  ;;       (global-linum-mode 1))
-  ;; (global-display-line-numbers-mode 1))
-#+END_SRC
+(if (version< emacs-version "26")
+(eval (message "Cannot enable global-display-line-numbers-mode emacs version less than 26.0")
+(global-display-line-numbers-mode 0)
+)
+(global-linum-mode 1)
+)
+-#+END_SRC
 *** Change Line spacing
 By default change line spacing to 0.1 . 0.1 does not do anything, I sometimes change it to 0.5 .
 #+BEGIN_SRC emacs-lisp
@@ -201,7 +203,7 @@ By default change line spacing to 0.1 . 0.1 does not do anything, I sometimes ch
 *** Fonts
 #+BEGIN_SRC emacs-lisp
 (custom-set-faces
- '(default ((t (:family "Source Code Pro Regular" :slant normal :weight bold :height 110 :width normal))))
+'(default ((t (:family "Source Code Pro Regular" :slant normal :weight bold :height 130 :width normal))))
 )
 #+END_SRC
 *** Theme
@@ -468,6 +470,7 @@ xref-js2 adds support for quickly jumping to function definitions or references 
 )
 #+END_SRC
 ** Python IDE, Elpy
+#+BEGIN_SRC emacs-lisp
 (use-package elpy
 :ensure t
 :init
@@ -476,3 +479,5 @@ xref-js2 adds support for quickly jumping to function definitions or references 
 (setq python-shell-interpreter "python"
       python-shell-interpreter-args "-i")
 )
+
+#+END_SRC
