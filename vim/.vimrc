@@ -30,7 +30,7 @@ set iskeyword-=_
 
 " mouse mode
 set mouse=a
-colorscheme molokai
+" colorscheme molokai
 " let g:molokai_original = 1
 
 let mapleader=","
@@ -97,3 +97,5 @@ let g:vimtex_compiler_latexmk = {
 " (sudo npm i -g eslint eslint-plugin-vue)
 let g:ale_linter_aliases = {'vue': ['vue', 'javascript']}
 let g:ale_linters = {'vue': ['eslint', 'vls']}
+let g:tex_flavor = "latex"
+
