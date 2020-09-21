@@ -7,65 +7,56 @@ height = 20
 offset-y = 0
 offset-x = 0
 
-border-top-size = 5
+border-top-size = 0
 border-bottom-size = 0
-border-right-size = 10
-border-left-size = 10
+border-right-size = 0
+border-left-size = 0
 
 ;----------;
 ; LOCATION ;
 ;----------;
 
 bottom = false
-monitor = eDP1
+monitor = eDP-1
 wm-restack = none
 override-redirect = false
 
 ;-------;
 ; FONTS ;
 ;-------;
-
-font-0 = SFProText:style=Medium:size=12;3
-font-1 = "FontAwesome:style=Solid:pixelsize=10;3"
-font-2 = "FontAwesome:style=Regular:pixelsize=10;3"
+font-0 = SFProText:style=Medium:size=9;3
+font-1 = "FontAwesome:style=Solid:pixelsize=9;3"
+font-2 = "FontAwesome:style=Regular:pixelsize=9;3"
 font-3 = "FontAwesome:pixelsize=10;3"
 
 ;--------;
 ; COLORS ;
 ;--------;
-
-background = 0
-
-; Suitable for dark background
-; foreground = #c5a9f9
-foreground = #fdfdfc
-
+background = #dce6e2
 ; Suitable for light background
-; foreground = #131018
-
-border-color = 0
+foreground = #131018
+border-color = #131018
 
 ;---------------;
 ; MISCELLANEOUS ;
 ;---------------;
-
 fixed-center = true
-padding-left = 2 
-padding-right = 2
+padding-left = 10
+padding-right = 10
 module-margin = 3
 
-modules-left = volume backlight battery spotify
-modules-center = bspwm
+modules-left = volume backlight battery
+modules-center = i3
 modules-right = wlan cpu date time
 
 tray-position = none
 tray-detached = true
 
-[bar/mpd]
 ;------------;
 ; DIMENSIONS ;
 ;------------;
 
+[bar/mpd]
 width = 100%
 height = 20
 offset-y = 0
@@ -89,7 +80,7 @@ override-redirect = false
 ; FONTS ;
 ;-------;
 
-font-0 = Hack:size=10;3
+font-0 = Hack:size=9;3
 font-1 = "FontAwesome:style=Solid:pixelsize=10;3"
 font-2 = "FontAwesome:style=Regular:pixelsize=10;3"
 font-3 = "FontAwesome:pixelsize=10;3"
@@ -119,7 +110,6 @@ modules-center = mpd
 ;---------;
 ; MODULES ;
 ;---------;
-
 [module/bspwm]
 type = internal/bspwm
 
@@ -137,6 +127,52 @@ label-unfocused-foreground = #c5a9f9
 
 label-urgent-foreground = #ff0000
 label-empty = 
+
+[module/i3]
+type = internal/i3
+
+; Only show workspaces defined on the same output as the bar
+;
+; Useful if you want to show monitor specific workspaces
+; on different bars
+;
+; Default: false
+pin-workspaces = true
+
+; This will split the workspace name on ':'
+; Default: false
+strip-wsnumbers = true
+
+label-unfocused-foreground = #6e9c89
+
+; Sort the workspaces by index instead of the default
+; sorting that groups the workspaces by output
+; Default: false
+index-sort = true
+
+; Create click handler used to focus workspace
+; Default: true
+enable-click = false
+
+; Create scroll handlers used to cycle workspaces
+; Default: true
+enable-scroll = false
+
+; Wrap around when reaching the first/last workspace
+; Default: true
+wrapping-scroll = false
+
+; Set the scroll cycle direction 
+; Default: true
+reverse-scroll = false
+
+; Use fuzzy (partial) matching on labels when assigning 
+; icons to workspaces
+; Example: code;♚ will apply the icon to all workspaces 
+; containing 'code' in the label
+; Default: false
+fuzzy-match = true
+
 
 [module/time]
 type = internal/date
@@ -175,7 +211,7 @@ ramp-capacity-3 = 
 ramp-capacity-4 = 
 
 [module/volume]
-type = internal/volume
+type = internal/alsa
 
 format-volume = <ramp-volume> <label-volume>
 format-muted =  0%
