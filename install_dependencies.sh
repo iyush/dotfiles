@@ -26,26 +26,27 @@ fedora_dependencies=(
 )
 
 ubuntu_dependencies=(
-    'build_essential'
-    'vim-gtk3'                                              # GTK Vim
-    'emacs'                                             # our lord and saviour
-    'fonts-inconsolata'                          # favourite terminal font
-    #'bspwm'
-    #'sxhkd'
-    #'redshift'
-    #'nitrogen'
-    #'compton'
+    'build-essential'
+    'vim-gtk3'                      # GTK Vim
+    'emacs'                         # our lord and saviour
+    'fonts-inconsolata'             # favourite terminal font
+    'redshift'
+    'nitrogen'
+    'compton'
     'ranger'
     'gnome-terminal'
-    #'rofi'
-    'pylint3'                                            # python linting
-    'texlive'                                           # For tex files
-    'texlive-lacheck'                                   # TeX files linting
-    'syncthing'                                         # for file sync
-    'stow'                                              # gnu stow
-    #'lxappearance'                                      # lxappearance
-    'npm'						# Node package Manager 
-    'nodejs'						# Node.js
+    'pylint3'                       # python linting
+    'texlive'                       # For tex files
+    'latexmk'                       # For tex files
+    #'texlive-lacheck'              # TeX files linting
+    'syncthing'                     # for file sync
+    'stow'                          # gnu stow
+    'lxappearance'                  # lxappearance
+    'npm'                           # Node package Manager 
+    'nodejs'                        # Node.js
+    'fonts-font-awesome'            # Font awesome for polybar
+    'pandoc'                        # convert one document format to another document format.
+    'texlive-latex-extra'           # texlive latex extra for converting md to pdf using pandoc.
 )
 
 npmEssentials=(
@@ -104,7 +105,13 @@ read -p "Do you want to install Polybar? [Y/n] " response
 if [ ! $response -o $response = 'y' -o $response = 'Y' ]
 then
     # installation of polybar
-    dnf install ${polybarDependencies[@]}
+    if [[ $OS == *"Ubuntu"* ]]
+    then
+        apt-get install -y ${polybarDependencies[@]}
+    elif [[ $OS == *"Fedora"* ]]
+    then
+        dnf install ${polybarDependencies[@]}
+    fi
     mkdir ~/build
     cd build
     cmake ..
