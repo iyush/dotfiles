@@ -1,6 +1,4 @@
-
-;; BAR WHITE 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;; BAR WHITE 
 [bar/white]
 width = 100%
 height = 20
@@ -42,10 +40,7 @@ background = #dce6e2
 foreground = #131018
 border-color = #131018
 
-;------------;
-; DIMENSIONS ;
-;------------;
-
+;;;;; MPD Mini bar
 [bar/mpd]
 width = 100%
 height = 20
@@ -57,36 +52,24 @@ border-bottom-size = 0
 border-right-size = 10
 border-left-size = 10
 
-;----------;
-; LOCATION ;
-;----------;
-
+; Location 
 bottom = true
 monitor = eDP1
 wm-restack = i3
 override-redirect = false
 
-;-------;
-; FONTS ;
-;-------;
-
+; Fonts
 font-0 = Hack:size=9;3
 font-1 = "FontAwesome:style=Solid:pixelsize=10;3"
 font-2 = "FontAwesome:style=Regular:pixelsize=10;3"
 font-3 = "FontAwesome:pixelsize=10;3"
 
-;--------;
-; COLORS ;
-;--------;
-
+; COLORS
 background = 0
 foreground = #c5a9f9
 border-color = 0
 
-;---------------;
-; MISCELLANEOUS ;
-;---------------;
-
+; MISCELLANEOUS
 fixed-center = true
 padding-left = 2 
 padding-right = 2

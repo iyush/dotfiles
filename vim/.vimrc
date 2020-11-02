@@ -12,7 +12,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'lervag/vimtex'                                     " For Latex Files
 Plug 'tpope/vim-surround'                                " For parenthesis manipulations
 "Plug 'scrooloose/syntastic'                              " for syntax checking
-Plug 'dense-analysis/ale'                               " async syntax checking
+"Plug 'dense-analysis/ale'                               " async syntax checking
 Plug 'scrooloose/nerdtree'                               " nerd-tree
 Plug 'tomasr/molokai'                                   " color scheme
 Plug 'vim-scripts/L9'                                    " for fuzzy finder
