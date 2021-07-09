@@ -7,23 +7,30 @@ if !filereadable(expand('~/.vim/autoload/plug.vim'))
 	silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ~/.vim/autoload/plug.vim
 endif
 
+
 " start vim plug
 call plug#begin('~/.vim/plugged')
 Plug 'lervag/vimtex'                                     " For Latex Files
 Plug 'tpope/vim-surround'                                " For parenthesis manipulations
-"Plug 'scrooloose/syntastic'                              " for syntax checking
+"Plug 'scrooloose/syntastic'                             " for syntax checking
 "Plug 'dense-analysis/ale'                               " async syntax checking
 Plug 'scrooloose/nerdtree'                               " nerd-tree
-Plug 'tomasr/molokai'                                   " color scheme
-Plug 'vim-scripts/L9'                                    " for fuzzy finder
-"Plug 'valloric/youcompleteme'                          " completion auto
+Plug 'tomasr/molokai'                                    " color scheme
 Plug 'neoclide/coc.nvim', {'branch': 'release'}          " conquer of completion code
-Plug 'posva/vim-vue'                                    " vue mode
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'posva/vim-vue', {'for': 'vue'}                     " vue mode
 call plug#end()
 
 " Fuzzy finder
 set path+=**
 set wildmenu
+set wildmode=list:longest,full
 
 " set underscore as word break
 set iskeyword-=_
@@ -70,18 +77,24 @@ autocmd GUIEnter * set visualbell t_vb=
 
 set title
 
-set tabstop=4			" number of visual spaces per TAB
-set softtabstop=4		" number of spaces in tab when editing
+set tabstop=2			" number of visual spaces per TAB
+set softtabstop=2		" number of spaces in tab when editing
 set shiftwidth=0
 set number              " show line numbers
 set expandtab
 set lazyredraw
 
 filetype indent on      " load filetype-specific indent files
+
+
+"Remaps
 nnoremap <leader><space> :nohlsearch<CR>
+nnoremap <leader>n :nohlsearch<CR>
+nnoremap <expr> <C-b> g:NERDTree.IsOpen() ? "\:NERDTreeClose<CR>" : "\:NERDTreeFind<CR>"
+nnoremap <C-p> :Files<CR>
+
 
 " vimtex specific for minted
-
 let g:vimtex_compiler_latexmk = {
     \ 'options' : [
     \   '-pdf',
@@ -95,7 +108,21 @@ let g:vimtex_compiler_latexmk = {
 
 " Vue and ALE you need to install vim-vue and eslint 
 " (sudo npm i -g eslint eslint-plugin-vue)
-let g:ale_linter_aliases = {'vue': ['vue', 'javascript']}
-let g:ale_linters = {'vue': ['eslint', 'vls']}
+" let g:ale_linter_aliases = {'vue': ['vue', 'javascript']}
+" let g:ale_linters = {'vue': ['eslint', 'vls']}
 let g:tex_flavor = "latex"
+
+
+" COC for react and typescript
+let g:coc_global_extensions = [ 'coc-tsserver', 'coc-json' ]
+
+if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
+  let g:coc_global_extensions += ['coc-prettier']
+endif
+
+if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
+  let g:coc_global_extensions += ['coc-eslint']
+endif
+
+
 
