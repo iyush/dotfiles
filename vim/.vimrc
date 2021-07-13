@@ -2,9 +2,9 @@
 
 set nocompatible
 if !filereadable(expand('~/.vim/autoload/plug.vim'))
-	echo "Downloading junegunn/vim-plug to manage plugins..."
-	silent !mkdir -p ~/.vim/autoload/
-	silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ~/.vim/autoload/plug.vim
+        echo "Downloading junegunn/vim-plug to manage plugins..."
+        silent !mkdir -p ~/.vim/autoload/
+        silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ~/.vim/autoload/plug.vim
 endif
 
 
@@ -47,6 +47,8 @@ let maplocalleader=","
 filetype plugin on
 set omnifunc=syntaxComplete#Complete
 
+set hidden
+
 
 " Set incremental search to be on
 set incsearch
@@ -77,12 +79,24 @@ autocmd GUIEnter * set visualbell t_vb=
 
 set title
 
-set tabstop=2			" number of visual spaces per TAB
-set softtabstop=2		" number of spaces in tab when editing
-set shiftwidth=0
 set number              " show line numbers
-set expandtab
 set lazyredraw
+
+au BufNewFile,BufRead *.py
+                        \ set tabstop=4     |
+                        \ set softtabstop=4 |
+                        \ set shiftwidth=4  |
+                        \ set textwidth=79  |
+                        \ set autoindent    |
+                        \ set fileformat=unix
+
+au BufNewFile,BufRead *.js,*.html,*.css,*.tsx,*.ts,*.jsx
+                        \ set tabstop=2     |
+                        \ set shiftwidth=2  |
+                        \ set textwidth=79  |
+                        \ set autoindent    
+
+set expandtab
 
 filetype indent on      " load filetype-specific indent files
 
@@ -90,21 +104,23 @@ filetype indent on      " load filetype-specific indent files
 "Remaps
 nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <leader>n :nohlsearch<CR>
-nnoremap <expr> <C-b> g:NERDTree.IsOpen() ? "\:NERDTreeClose<CR>" : "\:NERDTreeFind<CR>"
-nnoremap <C-p> :Files<CR>
+nnoremap <leader>p :Files<CR>
+nnoremap <leader>B :Buffers<CR>
+nnoremap <leader>f :Rg<CR>
+nnoremap <expr> <leader>b g:NERDTree.IsOpen() ? "\:NERDTreeClose<CR>" : "\:NERDTreeFind<CR>"
 
 
 " vimtex specific for minted
 let g:vimtex_compiler_latexmk = {
-    \ 'options' : [
-    \   '-pdf',
-    \   '-shell-escape',
-    \   '-verbose',
-    \   '-file-line-error',
-    \   '-synctex=1',
-    \   '-interaction=nonstopmode',
-    \ ],
-    \}
+                        \ 'options' : [
+                        \   '-pdf',
+                        \   '-shell-escape',
+                        \   '-verbose',
+                        \   '-file-line-error',
+                        \   '-synctex=1',
+                        \   '-interaction=nonstopmode',
+                        \ ],
+                        \}
 
 " Vue and ALE you need to install vim-vue and eslint 
 " (sudo npm i -g eslint eslint-plugin-vue)
@@ -114,15 +130,12 @@ let g:tex_flavor = "latex"
 
 
 " COC for react and typescript
-let g:coc_global_extensions = [ 'coc-tsserver', 'coc-json' ]
+let g:coc_global_extensions = [ 'coc-tsserver', 'coc-json', 'coc-jedi' ]
 
 if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
-  let g:coc_global_extensions += ['coc-prettier']
+        let g:coc_global_extensions += ['coc-prettier']
 endif
 
 if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
-  let g:coc_global_extensions += ['coc-eslint']
+        let g:coc_global_extensions += ['coc-eslint']
 endif
-
-
-
