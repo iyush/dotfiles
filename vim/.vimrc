@@ -10,22 +10,19 @@ endif
 
 " start vim plug
 call plug#begin('~/.vim/plugged')
+Plug 'sheerun/vim-polyglot'                              " collection of language packs
 Plug 'lervag/vimtex'                                     " For Latex Files
 Plug 'tpope/vim-surround'                                " For parenthesis manipulations
-"Plug 'scrooloose/syntastic'                             " for syntax checking
-"Plug 'dense-analysis/ale'                               " async syntax checking
 Plug 'scrooloose/nerdtree'                               " nerd-tree
-Plug 'tomasr/molokai'                                    " color scheme
 Plug 'neoclide/coc.nvim', {'branch': 'release'}          " conquer of completion code
+Plug 'drewtempelmeyer/palenight.vim'                     " colorscheme
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
-Plug 'pangloss/vim-javascript'
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
-Plug 'posva/vim-vue', {'for': 'vue'}                     " vue mode
+Plug 'rust-lang/rust.vim', {'for': 'rust'}               " rust mode
 call plug#end()
+
 
 " Fuzzy finder
 set path+=**
@@ -37,8 +34,6 @@ set iskeyword-=_
 
 " mouse mode
 set mouse=a
-" colorscheme molokai
-" let g:molokai_original = 1
 
 let mapleader=","
 let maplocalleader=","
@@ -49,16 +44,14 @@ set omnifunc=syntaxComplete#Complete
 
 set hidden
 
-
 " Set incremental search to be on
 set incsearch
 
 " Ignore case when searching
 set ignorecase
 
-
-" Font
-set guifont=Source\ Code\ Pro\ 12
+" colorscheme
+colorscheme palenight
 
 " GVIM
 set guioptions-=m                   " hide menubar
@@ -100,13 +93,13 @@ set expandtab
 
 filetype indent on      " load filetype-specific indent files
 
-
 "Remaps
 nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <leader>n :nohlsearch<CR>
 nnoremap <leader>p :Files<CR>
 nnoremap <leader>B :Buffers<CR>
 nnoremap <leader>f :Rg<CR>
+nnoremap <leader>= :normal gg=G``<CR>
 nnoremap <expr> <leader>b g:NERDTree.IsOpen() ? "\:NERDTreeClose<CR>" : "\:NERDTreeFind<CR>"
 
 
@@ -122,15 +115,11 @@ let g:vimtex_compiler_latexmk = {
                         \ ],
                         \}
 
-" Vue and ALE you need to install vim-vue and eslint 
-" (sudo npm i -g eslint eslint-plugin-vue)
-" let g:ale_linter_aliases = {'vue': ['vue', 'javascript']}
-" let g:ale_linters = {'vue': ['eslint', 'vls']}
 let g:tex_flavor = "latex"
 
 
 " COC for react and typescript
-let g:coc_global_extensions = [ 'coc-tsserver', 'coc-json', 'coc-jedi' ]
+let g:coc_global_extensions = [ 'coc-tsserver', 'coc-json', 'coc-jedi', 'coc-rust-analyzer' ]
 
 if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
         let g:coc_global_extensions += ['coc-prettier']
