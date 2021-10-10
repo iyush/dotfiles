@@ -1,3 +1,0 @@
-* Dotfiles
-** Installation
-Requires =stow=, all the dependencies are installed in =install_dependies.sh=, if you want to install config only (requires =stow)=, run =./install_config.sh=
