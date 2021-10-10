@@ -12,8 +12,6 @@ super + d
 super + c
 	chromium-browser
 
-
-
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd
@@ -32,7 +30,7 @@ super + alt + Escape
 
 # close and kill
 super + {_,shift + }w
-	bspc node -{c,k}
+	bspc node -c
 
 # alternate between the tiled and monocle layout
 super + m
@@ -60,7 +58,7 @@ super + ctrl + {x,y,z}
 
 #
 # focus/swap
-#
+
 
 # focus the node in the given direction
 super + {_,shift + }{h,j,k,l}
@@ -135,7 +133,6 @@ super + {Left,Down,Up,Right}
 
 ########################### AUDIO AND BRIGHTNESS CONTROLS #######################
 
-
 # Audio Controls
 
 XF86AudioRaiseVolume 
@@ -147,10 +144,18 @@ XF86AudioLowerVolume
 XF86AudioMute 
 	pactl set-sink-mute alsa_output.pci-0000_00_1f.3.analog-stereo toggle #raise volume the sink is discovered using tab completion on pactl
 
+##### Incase xbacklight is used
 # Screen brightness controls
+# XF86MonBrightnessUp 
+# 	xbacklight -inc 20 # increase screen brightness
+# XF86MonBrightnessDown 
+# 	xbacklight -dec 20 # decrease screen brightness
+
+##### Incase brightnessctl is used (important: add user to the video group, otherwise will require sudo)
 XF86MonBrightnessUp 
-	xbacklight -inc 20 # increase screen brightness
-XF86MonBrightnessDown 
-	xbacklight -dec 20 # decrease screen brightness
+	brightnessctl s 10%+
+
+XF86MonBrightnessDown
+	brightnessctl s 10%-
 
 ################################################################################
