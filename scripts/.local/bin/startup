@@ -1,0 +1,28 @@
+#!/bin/bash
+
+nMonitors=$(xrandr -q | grep -w connected | wc -l)
+internal_monitor=eDP-1
+external_monitor=DP-2
+
+monitor_dual() {
+	xrandr \
+		--output $external_monitor --primary --mode 3840x2160 --rotate normal \
+		--output $internal_monitor --mode 1920x1080 --rotate normal --right-of $external_monitor
+
+	bspc monitor $external_monitor -d 1 2 3 4 5
+	bspc monitor $internal_monitor -d 6 7 8 9 10
+}
+
+monitor_singular() {
+	xrandr \
+		--output $internal_monitor --mode 1920x1080 --rotate normal --primary
+	bspc monitor $internal_monitor -d 1 2 3 4 5 6 7 8 9 10
+}
+
+if [[ $nMonitors -eq 2 ]]; then
+	monitor_dual
+else
+	monitor_singular
+fi
+
+$HOME/.config/polybar/launch.sh
