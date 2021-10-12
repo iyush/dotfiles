@@ -1,0 +1,125 @@
+---
+- name: Install Ubuntu dependencies
+  hosts: localhost
+  become: yes
+  tasks:
+  - apt:
+      name:
+        - rofi
+        - build-essential
+        - vim-gtk3                      
+        - emacs                        
+        - fonts-inconsolata           
+        - bspwm
+        - sxhkd
+        - redshift
+        - nitrogen
+        - compton
+        - ranger
+        - gnome-terminal
+        - pylint3                    
+        - texlive                   
+        - latexmk                  
+        - syncthing              
+        - stow                  
+        - lxappearance         
+        - npm                 
+        - nodejs             
+        - fonts-font-awesome
+        - pandoc           
+        - texlive-latex-extra
+        - fonts-material-design-icons-iconfont
+        - brightnessctl
+      state: latest
+      update_cache: true
+
+- name: Install Polybar
+  hosts: localhost
+  become: yes
+  tasks:
+  - name: Install Dependencies
+    apt:
+      name:
+        - cmake 
+        - build-essential
+        - libcairo2-dev 
+        - python3-xcbgen
+        - xcb-proto 
+        - libxcb1-dev
+        - libxcb-util0-dev
+        - libxcb-randr0-dev
+        - libxcb-composite0-dev
+        - libxcb-ewmh-dev
+        - libxcb-icccm4-dev
+        - libxcb-image0-dev
+        - libasound2-dev
+        - libiw-dev
+        - libmpdclient-dev
+        - libcurl4-openssl-dev
+        - python3-sphinx
+      state: latest
+      update_cache: true
+
+  - name: Check if polybar is already installed
+    stat:
+      path: /usr/local/bin/polybar
+    register: polybar
+
+  - name: Get source
+    git:
+      repo: https://github.com/polybar/polybar 
+      dest: /tmp/polybar
+    when: not polybar.stat.exists
+
+  - name: Build and Install
+    command: "{{ item }} chdir=/tmp/polybar"
+    with_items:
+      - /usr/bin/cmake .
+      - /usr/bin/make -j4
+      - /usr/bin/make install
+    when: not polybar.stat.exists
+
+  - name: Remove source
+    file:
+      path: /tmp/polybar
+      state: absent
+    when: not polybar.stat.exists
+
+  - name: Add "{{ lookup('env', 'USER') }}" to the video group (for brightnessctl)
+    user:
+      name: "{{ lookup('env', 'USER') }}"
+      groups: video
+      append: yes
+
+- name: Configure xorg files
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Make folder (if it does not exist)
+      file:
+        path: /etc/X11/xorg.conf.d/
+        state: directory
+
+    - name: Copy the xorg files of the touchpad
+      copy:
+        src: "{{ playbook_dir }}/../xorg-configs/30-touchpad.conf"
+        dest: /etc/X11/xorg.conf.d/30-touchpad.conf 
+
+- name: Symlink all the dotfiles
+  hosts: localhost
+  tasks:
+    - name: Run stow
+      command: "{{ item }} chdir={{playbook_dir}}/../"
+      with_items:
+        - "stow -t {{ lookup('env', 'HOME') }} bash" 
+        - "stow -t {{ lookup('env', 'HOME') }} bspwm" 
+        - "stow -t {{ lookup('env', 'HOME') }} i3" 
+        - "stow -t {{ lookup('env', 'HOME') }} vim" 
+        - "stow -t {{ lookup('env', 'HOME') }} compton" 
+        - "stow -t {{ lookup('env', 'HOME') }} emacs" 
+        - "stow -t {{ lookup('env', 'HOME') }} polybar" 
+        - "stow -t {{ lookup('env', 'HOME') }} nitrogen" 
+        - "stow -t {{ lookup('env', 'HOME') }} sxhkd" 
+        - "stow -t {{ lookup('env', 'HOME') }} zsh" 
+        - "stow -t {{ lookup('env', 'HOME') }} xfiles" 
+        - "stow -t {{ lookup('env', 'HOME') }} redshift" 

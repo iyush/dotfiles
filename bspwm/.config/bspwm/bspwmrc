@@ -21,8 +21,6 @@ bspc rule -a Zathura state=tiled
 bspc rule -a Emacs state=tiled
 
 # autoloading programs
-setxkbmap -option ctrl:swapcaps
-redshift &
 polybar white &
 nitrogen --restore &
 xsetroot -cursor_name left_ptr

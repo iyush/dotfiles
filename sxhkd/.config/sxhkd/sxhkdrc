@@ -2,7 +2,7 @@
 
 # terminal emulator
 super + Return
-    terminator
+	gnome-terminal
 
 # rofi launcher
 super + d
