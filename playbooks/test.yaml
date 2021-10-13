@@ -30,6 +30,7 @@
         - texlive-latex-extra
         - fonts-material-design-icons-iconfont
         - brightnessctl
+        - pavucontrol
       state: latest
       update_cache: true
 

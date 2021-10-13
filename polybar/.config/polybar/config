@@ -178,7 +178,7 @@ ramp-2 = 
 
 [module/wlan]
 type = internal/network
-interface = wlp0s20f3
+interface = wlp3s0
 interval = 5
 label-connected =  %essid%
 label-disconnected =  Not Connected
