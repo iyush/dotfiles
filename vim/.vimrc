@@ -29,9 +29,6 @@ set path+=**
 set wildmenu
 set wildmode=list:longest,full
 
-" set underscore as word break
-set iskeyword-=_
-
 " mouse mode
 set mouse=a
 
@@ -51,7 +48,7 @@ set incsearch
 set ignorecase
 
 " colorscheme
-colorscheme palenight
+" colorscheme palenight
 
 " GVIM
 set guioptions-=m                   " hide menubar
