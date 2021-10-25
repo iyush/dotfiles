@@ -13,7 +13,6 @@
         - bspwm
         - sxhkd
         - redshift
-        - nitrogen
         - compton
         - ranger
         - gnome-terminal
@@ -23,7 +22,6 @@
         - syncthing              
         - stow                  
         - lxappearance         
-        - npm                 
         - nodejs             
         - fonts-font-awesome
         - pandoc           
@@ -31,6 +29,7 @@
         - fonts-material-design-icons-iconfont
         - brightnessctl
         - pavucontrol
+        - playerctl
       state: latest
       update_cache: true
 
@@ -49,10 +48,12 @@
         - libxcb1-dev
         - libxcb-util0-dev
         - libxcb-randr0-dev
+        - libxcb-xrm-dev
         - libxcb-composite0-dev
         - libxcb-ewmh-dev
         - libxcb-icccm4-dev
         - libxcb-image0-dev
+        - libuv1-dev
         - libasound2-dev
         - libiw-dev
         - libmpdclient-dev
@@ -74,6 +75,7 @@
 
   - name: Build and Install
     command: "{{ item }} chdir=/tmp/polybar"
+    become: yes
     with_items:
       - /usr/bin/cmake .
       - /usr/bin/make -j4
@@ -119,8 +121,8 @@
         - "stow -t {{ lookup('env', 'HOME') }} compton" 
         - "stow -t {{ lookup('env', 'HOME') }} emacs" 
         - "stow -t {{ lookup('env', 'HOME') }} polybar" 
-        - "stow -t {{ lookup('env', 'HOME') }} nitrogen" 
         - "stow -t {{ lookup('env', 'HOME') }} sxhkd" 
         - "stow -t {{ lookup('env', 'HOME') }} zsh" 
         - "stow -t {{ lookup('env', 'HOME') }} xfiles" 
         - "stow -t {{ lookup('env', 'HOME') }} redshift" 
+        - "stow -t {{ lookup('env', 'HOME') }} urxvt" 

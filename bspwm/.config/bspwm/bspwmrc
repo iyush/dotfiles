@@ -24,9 +24,8 @@ bspc rule -a Zathura state=tiled
 bspc rule -a Emacs state=tiled
 
 # autoloading programs
-polybar white &
-python3 -m pywal -R
 urxvtd -q -o -f
 xsetroot -cursor_name left_ptr
 setxkbmap de,us -option grp:win_space_toggle
+python3 -m pywal -R
 # compton &

@@ -6,7 +6,7 @@ external_monitor=DP-1
 
 monitor_dual() {
 	xrandr \
-		--output $external_monitor --primary --mode 3840x2160 --rotate normal \
+		--output $external_monitor --primary --mode 1920x1080 --rotate normal \
 		--output $internal_monitor --mode 1920x1080 --rotate normal --right-of $external_monitor
 
 	bspc monitor $external_monitor -d 1 2 3 4 5
