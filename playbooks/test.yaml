@@ -126,3 +126,4 @@
         - "stow -t {{ lookup('env', 'HOME') }} xfiles" 
         - "stow -t {{ lookup('env', 'HOME') }} redshift" 
         - "stow -t {{ lookup('env', 'HOME') }} urxvt" 
+  ignore_errors: yes
