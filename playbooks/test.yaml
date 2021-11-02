@@ -30,6 +30,7 @@
         - brightnessctl
         - pavucontrol
         - playerctl
+        - xsecurelock
       state: latest
       update_cache: true
 
@@ -94,6 +95,48 @@
       groups: video
       append: yes
 
+- name: Install Neovim
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Check if polybar is already installed
+      stat:
+        path: /usr/bin/nvim
+      register: nvim
+
+    - name: Download the AppImage and move the AppImage
+      get_url:
+        url: https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+        dest: /usr/bin/nvim
+        mode: '777'
+      when: not nvim.stat.exists
+
+- name: Install nerdfonts
+  hosts: localhost
+  tasks:
+    - name: Check if nerd fonts already exists
+      stat:
+        path: "{{lookup('env', 'HOME')}}/.local/share/fonts/NerdFonts"
+      register: nerdfonts
+
+    - name: Git clone nerdfonts
+      git:
+        repo: https://github.com/ryanoasis/nerd-fonts.git
+        dest: /tmp/nerdfonts
+      when: not nerdfonts.stat.exists
+
+    - name: Install nerdfonts
+      command: "{{ item }} chdir=/tmp/nerdfonts"
+      with_items:
+        - ./install.sh
+      when: not nerdfonts.stat.exists
+
+    - name: Remove git source for nerdfonts
+      file:
+        path: /tmp/nerdfonts
+        state: absent
+      when: not nerdfonts.stat.exists
+
 - name: Configure xorg files
   hosts: localhost
   become: yes
@@ -107,6 +150,23 @@
       copy:
         src: "{{ playbook_dir }}/../xorg-configs/30-touchpad.conf"
         dest: /etc/X11/xorg.conf.d/30-touchpad.conf 
+
+- name: Setup the wallpaper
+  hosts: localhost
+  become: yes
+  tasks:
+  - name: Install pywal
+    pip:
+      name: pywal
+
+  - name: Download wallpaper to the pictures folder
+    copy:
+      src: "{{playbook_dir}}/../wallpapers"
+      dest: "{{ lookup('env', 'HOME') }}/Pictures" 
+
+  - name: Run pywall for the first time
+    command: "python3 -m pywal -i {{lookup('env', 'HOME')}}/Pictures/wallpapers/rhombuses-4k-geometric-wallpaper.png"
+
 
 - name: Symlink all the dotfiles
   hosts: localhost
@@ -126,4 +186,5 @@
         - "stow -t {{ lookup('env', 'HOME') }} xfiles" 
         - "stow -t {{ lookup('env', 'HOME') }} redshift" 
         - "stow -t {{ lookup('env', 'HOME') }} urxvt" 
+        - "stow -t {{ lookup('env', 'HOME') }} scripts" 
   ignore_errors: yes
