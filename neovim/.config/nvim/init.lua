@@ -2,7 +2,7 @@ for k in pairs(package.loaded) do
 	if k:match('plugins') or k:match('first_load') then
 		package.loaded[k] = nil
 	end
-end 
+end
 
 if require("first_load")() then
   return
@@ -10,8 +10,7 @@ end
 
 require('plugins')
 require('nvim-tree')
-require('after.nvim-tree')
-require('after.lsp')
+require('after')
 
 vim.o.expandtab = true
 vim.o.number = true

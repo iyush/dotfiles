@@ -69,6 +69,26 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
+  ["cmp-buffer"] = {
+    loaded = true,
+    path = "/home/aayush/.local/share/nvim/site/pack/packer/start/cmp-buffer"
+  },
+  ["cmp-cmdline"] = {
+    loaded = true,
+    path = "/home/aayush/.local/share/nvim/site/pack/packer/start/cmp-cmdline"
+  },
+  ["cmp-nvim-lsp"] = {
+    loaded = true,
+    path = "/home/aayush/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp"
+  },
+  ["cmp-path"] = {
+    loaded = true,
+    path = "/home/aayush/.local/share/nvim/site/pack/packer/start/cmp-path"
+  },
+  ["cmp-vsnip"] = {
+    loaded = true,
+    path = "/home/aayush/.local/share/nvim/site/pack/packer/start/cmp-vsnip"
+  },
   fzf = {
     loaded = true,
     path = "/home/aayush/.local/share/nvim/site/pack/packer/start/fzf"
@@ -80,6 +100,10 @@ _G.packer_plugins = {
   nerdtree = {
     loaded = true,
     path = "/home/aayush/.local/share/nvim/site/pack/packer/start/nerdtree"
+  },
+  ["nvim-cmp"] = {
+    loaded = true,
+    path = "/home/aayush/.local/share/nvim/site/pack/packer/start/nvim-cmp"
   },
   ["nvim-lspconfig"] = {
     loaded = true,
@@ -105,6 +129,10 @@ _G.packer_plugins = {
   ["vim-surround"] = {
     loaded = true,
     path = "/home/aayush/.local/share/nvim/site/pack/packer/start/vim-surround"
+  },
+  ["vim-vsnip"] = {
+    loaded = true,
+    path = "/home/aayush/.local/share/nvim/site/pack/packer/start/vim-vsnip"
   },
   vimtex = {
     loaded = true,
