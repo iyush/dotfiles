@@ -165,7 +165,28 @@
       dest: "{{ lookup('env', 'HOME') }}/Pictures" 
 
   - name: Run pywall for the first time
-    command: "python3 -m pywal -i {{lookup('env', 'HOME')}}/Pictures/wallpapers/rhombuses-4k-geometric-wallpaper.png"
+    command: "python3 -m pywal -i {{lookup('env', 'HOME')}}/Pictures/wallpapers/"
+
+- name: Download lua language server
+  hosts: localhost
+  tasks:
+    - name: Check if already installed
+      stat:
+        path: "{{ lookup('env', 'HOME') }}/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/bin/Linux/lua-language-server"
+      register: luaLangServer
+
+    - name: Git clone to a dir
+      git:
+        repo: https://github.com/sumneko/lua-language-server
+        dest: "{{ lookup('env', 'HOME') }}/.cache/nvim/lspconfig/sumneko_lua/lua-language-server"
+        recursive: true
+      when: not luaLangServer.stat.exists
+
+    - name: Build
+      command: "{{ item }} chdir={{ lookup('env', 'HOME') }}/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/"
+      with_items:
+        - bash -lc "cd 3rd/luamake && ./compile/install.sh"
+        - ./3rd/luamake/luamake rebuild
 
 
 - name: Symlink all the dotfiles
