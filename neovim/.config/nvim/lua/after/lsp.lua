@@ -1,5 +1,6 @@
 local nvim_lsp = require('lspconfig')
 local cmp = require('cmp')
+local lspkind = require('lspkind')
 local servers = { 'pyright', 'rust_analyzer', 'tsserver', 'ansiblels' }
 
 -- Use an on_attach function to only map the following keys
@@ -64,7 +65,10 @@ cmp.setup({
         -- { name = 'snippy' }, -- For snippy users.
       }, {
         { name = 'buffer' },
-      })
+      }),
+    formatting = {
+      format = lspkind.cmp_format({with_text = false, maxwidth = 50})
+    }
   })
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).

@@ -6,7 +6,7 @@ vim.cmd [[packadd packer.nvim]]
 return require('packer').startup(function()
   -- Packer can manage itself
   use 'sheerun/vim-polyglot'
-  use 'lervag/vimtex'      
+  use 'lervag/vimtex'
   use 'tpope/vim-surround'
   use 'scrooloose/nerdtree'
   use 'drewtempelmeyer/palenight.vim'
@@ -28,5 +28,5 @@ return require('packer').startup(function()
   use 'hrsh7th/nvim-cmp'
   use 'hrsh7th/cmp-vsnip'
   use 'hrsh7th/vim-vsnip'
-
+  use 'onsails/lspkind-nvim'
 end)
