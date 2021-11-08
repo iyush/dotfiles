@@ -1,7 +1,7 @@
 local nvim_lsp = require('lspconfig')
 local cmp = require('cmp')
 local lspkind = require('lspkind')
-local servers = { 'pyright', 'rust_analyzer', 'tsserver', 'ansiblels' }
+local servers = { 'pyright', 'rust_analyzer', 'tsserver', 'ansiblels' , 'ccls' }
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -104,7 +104,7 @@ local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
 
-require'lspconfig'.sumneko_lua.setup {
+nvim_lsp.sumneko_lua.setup {
   cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};
   settings = {
     Lua = {
@@ -128,4 +128,17 @@ require'lspconfig'.sumneko_lua.setup {
       },
     },
   },
+}
+
+-- cpp and c
+nvim_lsp.ccls.setup {
+  init_options = {
+    compilationDatabaseDirectory = "build";
+    index = {
+      threads = 0;
+    };
+    clang = {
+      excludeArgs = { "-frounding-math"} ;
+    };
+  }
 }
