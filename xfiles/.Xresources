@@ -11,5 +11,6 @@ rofi.show-icons: true
 URxvt.perl-ext-common: config-reload,resize-font
 URxvt*scrollTtyOutput: true   
 URxvt.scrollBar: false
+URxvt*scrollTtyKeypress: true
 
-URxvt.font: xft:dejavusansmono:size=10
+URxvt.font: xft:RobotoMono Nerd Font Mono:size=10
