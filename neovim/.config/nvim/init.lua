@@ -6,9 +6,9 @@ require('plugins')
 require('nvim-tree')
 require('after')
 
+vim.g.hidden = true
 vim.o.expandtab = true
 vim.o.number = true
 vim.o.ignorecase = true
 vim.o.mouse = 'a'
 vim.o.relativenumber = true
-

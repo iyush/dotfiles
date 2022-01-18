@@ -1,7 +1,9 @@
 local nvim_lsp = require('lspconfig')
 local cmp = require('cmp')
 local lspkind = require('lspkind')
-local servers = { 'pyright', 'rust_analyzer', 'tsserver', 'ansiblels' , 'ccls' }
+local servers = { 'tsserver', 'pyright', 'rust_analyzer', 'ansiblels' , 'ccls', 'vuels' }
+local util = require("lspconfig.util")
+vim.lsp.set_log_level("debug")
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -132,13 +134,18 @@ nvim_lsp.sumneko_lua.setup {
 
 -- cpp and c
 nvim_lsp.ccls.setup {
+  on_attach = on_attach,
   init_options = {
-    compilationDatabaseDirectory = "build";
     index = {
-      threads = 0;
+      threads = 2;
     };
     clang = {
       excludeArgs = { "-frounding-math"} ;
     };
-  }
+    cache = {directory = vim.fn.expand("~/.cache/.ccls-cache/") };
+  },
+  root_dir = util.root_pattern("compile_commands.json", ".ccls") --function(fname) return "/home/aayush/dpl01_ws/src/" end 
 }
+
+
+-- Vue js
