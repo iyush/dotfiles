@@ -1,0 +1,19 @@
+---
+- name: Check if already installed
+  stat:
+    path: "{{ lookup('env', 'HOME') }}/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/bin/Linux/lua-language-server"
+  register: luaLangServer
+
+- name: Git clone to a dir
+  git:
+    repo: https://github.com/sumneko/lua-language-server
+    dest: "{{ lookup('env', 'HOME') }}/.cache/nvim/lspconfig/sumneko_lua/lua-language-server"
+    recursive: true
+  when: (not luaLangServer.stat.exists)
+
+- name: Build
+  command: "{{ item }} chdir={{ lookup('env', 'HOME') }}/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/"
+  with_items:
+    - bash -lc "cd 3rd/luamake && ./compile/install.sh"
+    - ./3rd/luamake/luamake rebuild
+

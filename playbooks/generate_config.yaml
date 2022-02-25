@@ -1,0 +1,107 @@
+- hosts: localhost
+  connection: localhost
+  remote_user: root
+
+  vars:
+    config:
+      project_name: "Project"
+
+  vars_prompt:
+    - name: 'install_ubuntu_dependencies'
+      prompt: "Do you want to install Ubuntu dependencies?"
+      default: false
+      private: no
+
+    - name: 'install_bspwm'
+      prompt: "Do you want to install bspwm and all its dependencies?"
+      default: false
+      private: no
+
+    - name: 'install_nerdfonts'
+      prompt: "Do you want to install nerdfonts?"
+      default: false
+      private: no
+
+    - name: 'install_nvim'
+      prompt: "Do you want to install nvim?"
+      default: false
+      private: no
+
+    - name: 'install_lls'
+      prompt: "Do you want to install lua language server?"
+      default: false
+      private: no
+
+    - name: 'install_pls'
+      prompt: "Do you want to install python language server?"
+      default: false
+      private: no
+
+    - name: 'install_ccls'
+      prompt: "Do you want to install C, C++ and C# language server?"
+      default: false
+      private: no
+
+    - name: 'install_config'
+      prompt: "Do you want to install configurations?"
+      default: false
+      private: no
+
+  tasks:
+    - set_fact:
+        config: "{{ config | combine(new_item, recursive=true) }}"
+      vars:
+        new_item: "{ 'install_ccls': '{{install_ccls}}' }"
+      with_dict: "{{ config }}"
+
+    - set_fact:
+        config: "{{ config | combine(new_item, recursive=true) }}"
+      vars:
+        new_item: "{ 'install_pls': '{{install_pls}}' }"
+      with_dict: "{{ config }}"
+
+    - set_fact:
+        config: "{{ config | combine(new_item, recursive=true) }}"
+      vars:
+        new_item: "{ 'install_lls': '{{install_lls}}' }"
+      with_dict: "{{ config }}"
+
+    - set_fact:
+        config: "{{ config | combine(new_item, recursive=true) }}"
+      vars:
+        new_item: "{ 'install_nvim': '{{install_nvim}}' }"
+      with_dict: "{{ config }}"
+
+    - set_fact:
+        config: "{{ config | combine(new_item, recursive=true) }}"
+      vars:
+        new_item: "{ 'install_nerdfonts': '{{install_nerdfonts}}' }"
+      with_dict: "{{ config }}"
+
+    - set_fact:
+        config: "{{ config | combine(new_item, recursive=true) }}"
+      vars:
+        new_item: "{ 'install_bspwm': '{{install_bspwm}}' }"
+      with_dict: "{{ config }}"
+
+    - set_fact:
+        config: "{{ config | combine(new_item, recursive=true) }}"
+      vars:
+        new_item: "{ 'install_ubuntu_dependencies': '{{install_ubuntu_dependencies}}' }"
+      with_dict: "{{ config }}"
+
+    - set_fact:
+        config: "{{ config | combine(new_item, recursive=true) }}"
+      vars:
+        new_item: "{ 'install_config': '{{install_config}}' }"
+      with_dict: "{{ config }}"
+
+    - name: Create a ansible config
+      file:
+        path: "{{playbook_dir}}/.ansible_cfg"
+        state: directory
+
+    - debug:
+        msg: "{{ config }}" 
+    
+    - local_action: copy content={{ config }} dest="{{playbook_dir}}/.ansible_cfg/config.yaml"

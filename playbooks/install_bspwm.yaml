@@ -1,0 +1,80 @@
+---
+- name: Install Polybar Dependencies
+  apt:
+    name:
+      - cmake 
+      - build-essential
+      - libcairo2-dev 
+      - python3-xcbgen
+      - xcb-proto 
+      - libxcb1-dev
+      - libxcb-util0-dev
+      - libxcb-randr0-dev
+      - libxcb-xrm-dev
+      - libxcb-composite0-dev
+      - libxcb-ewmh-dev
+      - libxcb-icccm4-dev
+      - libxcb-image0-dev
+      - libuv1-dev
+      - libasound2-dev
+      - libiw-dev
+      - libmpdclient-dev
+      - libcurl4-openssl-dev
+      - python3-sphinx
+    state: latest
+    update_cache: true
+
+- name: Check if polybar is already installed
+  stat:
+    path: /usr/local/bin/polybar
+  register: polybar
+
+- name: Get source
+  git:
+    repo: https://github.com/polybar/polybar 
+    dest: /tmp/polybar
+  when: (not polybar.stat.exists)
+
+- name: Build and Install
+  command: "{{ item }} chdir=/tmp/polybar"
+  become: yes
+  with_items:
+    - /usr/bin/cmake .
+    - /usr/bin/make -j4
+    - /usr/bin/make install
+  when: (not polybar.stat.exists)
+- name: Remove source
+  file:
+    path: /tmp/polybar
+    state: absent
+  when: (not polybar.stat.exists)
+
+- name: Add "{{ lookup('env', 'USER') }}" to the video group (for brightnessctl)
+  user:
+    name: "{{ lookup('env', 'USER') }}"
+    groups: video
+    append: yes
+
+- name: [Configure xorgs] Make folder (if it does not exist)
+  file:
+    path: /etc/X11/xorg.conf.d/
+    state: directory
+
+- name: [Configure xorgs] Copy the xorg files of the touchpad
+  copy:
+    src: "{{ playbook_dir }}/../xorg-configs/30-touchpad.conf"
+    dest: /etc/X11/xorg.conf.d/30-touchpad.conf 
+
+- name: [Wallpaper] Install pywal
+  pip:
+    name: pywal
+
+- name: [Wallpaper] Download wallpaper to the pictures folder
+  copy:
+    src: "{{playbook_dir}}/../wallpapers"
+    dest: "{{ lookup('env', 'HOME') }}/Pictures" 
+
+- name: [Wallpaper] Run pywall for the first time
+  command: "python3 -m pywal -i {{lookup('env', 'HOME')}}/Pictures/wallpapers/"
+  when: install_pywal | bool
+

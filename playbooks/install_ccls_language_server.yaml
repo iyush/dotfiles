@@ -1,0 +1,24 @@
+---
+- name: Install CCLS dependencies
+  apt:
+    name: 
+      - libclang-13-dev
+      - clang
+      - cmake
+      - zlib1g-dev
+      - libncurses-dev
+      - libncurses5
+    state: latest
+    update_cache: true
+
+- name: Git Clone CCLS
+  git:
+    repo: https://github.com/MaskRay/ccls
+    dest: /tmp/ccls
+      
+- name: Build and Install
+  command: "{{ item }} chdir=/tmp/ccls"
+  become: yes
+  with_items:
+    - cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/lib/llvm-7 -DLLVM_INCLUDE_DIR=/usr/lib/llvm-7/include -DLLVM_BUILD_INCLUDE_DIR=/usr/include/llvm-7/
+    - cmake --build Release --target install

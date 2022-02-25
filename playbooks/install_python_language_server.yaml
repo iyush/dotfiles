@@ -1,0 +1,8 @@
+---
+- name: Check if already installed
+  command: npm list -g
+  register: pyLangServer
+
+- name: Install using npm
+  command: npm install -g pyright
+  when: not ('pyright' in pyLangServer.stdout)

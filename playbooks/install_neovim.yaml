@@ -1,0 +1,13 @@
+---
+- name: Check if nvim is already installed
+  stat:
+    path: /usr/bin/nvim
+  register: nvim
+
+- name: Download the AppImage and move the AppImage
+  get_url:
+    url: https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+    dest: /usr/bin/nvim
+    mode: '777'
+  when: (not nvim.stat.exists)
+
