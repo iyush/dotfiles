@@ -10,6 +10,7 @@
       when: config.install_ubuntu_dependencies | bool
       apt:
         name:
+          - stow
           - rofi
           - ninja-build
           - build-essential
@@ -46,13 +47,18 @@
       when: config.install_pls | bool
       include_tasks: install_python_language_server.yaml
 
-    - name: Install Lua Language Server
-      when: config.install_lls | bool
-      include_tasks: install_lua_language_server.yaml
-
     - name: Install CCLS
       when: config.install_ccls | bool
       include_tasks: install_ccls_language_server.yaml
+
+
+- name: Install Everything
+  hosts: localhost
+  become: no
+  tasks:
+    - name: Install Lua Language Server
+      when: config.install_lls | bool
+      include_tasks: install_lua_language_server.yaml
 
     - name: Install configuration
       command: "{{ item }} chdir={{playbook_dir}}/../"
@@ -70,5 +76,6 @@
         - "stow -t {{ lookup('env', 'HOME') }} redshift" 
         - "stow -t {{ lookup('env', 'HOME') }} urxvt" 
         - "stow -t {{ lookup('env', 'HOME') }} scripts" 
+        - "stow -t {{ lookup('env', 'HOME') }} neovim" 
       when: config.install_config | bool
       ignore_errors: True

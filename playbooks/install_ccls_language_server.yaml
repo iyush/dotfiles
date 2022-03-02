@@ -2,7 +2,7 @@
 - name: Install CCLS dependencies
   apt:
     name: 
-      - libclang-13-dev
+      - libclang-dev
       - clang
       - cmake
       - zlib1g-dev
