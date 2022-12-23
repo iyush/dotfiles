@@ -8,6 +8,7 @@
       - zlib1g-dev
       - libncurses-dev
       - libncurses5
+      - ninja-build
     state: latest
     update_cache: true
 

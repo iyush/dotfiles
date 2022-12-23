@@ -3,7 +3,10 @@
 -- Only required if you have packer configured as `opt`
 vim.cmd [[packadd packer.nvim]]
 
-return require('packer').startup(function(use)
+return require('packer').startup(function(use, use_rocks)
+  -- theme
+  use { "ellisonleao/gruvbox.nvim" }
+
   -- Packer can manage itself
   use 'sheerun/vim-polyglot'
   use 'lervag/vimtex'
@@ -18,8 +21,12 @@ return require('packer').startup(function(use)
     config = function() require'nvim-tree'.setup {} end
   }
 
-
   -- LSP
+  -- mason for installing lsp servers
+  use {
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
+  }
   use 'neovim/nvim-lspconfig'
   use 'hrsh7th/cmp-nvim-lsp'
   use 'hrsh7th/cmp-buffer'
@@ -37,5 +44,6 @@ return require('packer').startup(function(use)
   requires = {'kyazdani42/nvim-web-devicons', opt = true}
   }
 
-  -- fugitive
+  -- json parser
+  use_rocks { 'lunajson' }
 end)
