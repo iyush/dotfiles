@@ -45,5 +45,5 @@ return require('packer').startup(function(use, use_rocks)
   }
 
   -- json parser
-  use_rocks { 'lunajson' }
+  require('packer').use_rocks { 'lunajson' }
 end)
