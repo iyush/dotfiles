@@ -3,7 +3,7 @@
 -- Only required if you have packer configured as `opt`
 vim.cmd [[packadd packer.nvim]]
 
-return require('packer').startup(function(use, use_rocks)
+return require('packer').startup(function(use)
   -- theme
   use { "ellisonleao/gruvbox.nvim" }
 
@@ -11,18 +11,20 @@ return require('packer').startup(function(use, use_rocks)
   use 'sheerun/vim-polyglot'
   use 'lervag/vimtex'
   use 'tpope/vim-surround'
-  use 'scrooloose/nerdtree'
   use 'drewtempelmeyer/palenight.vim'
-  use {'junegunn/fzf', run = function() vim.fn['fzf#install']()  end }
-  use 'junegunn/fzf.vim'
   use {
-    'kyazdani42/nvim-tree.lua',
-    requires = 'kyazdani42/nvim-web-devicons',
-    config = function() require'nvim-tree'.setup {} end
+    'nvim-tree/nvim-tree.lua',
+    requires = 'nvim-tree/nvim-web-devicons'
+  }
+
+  -- Telescope for searching
+  use {
+    'nvim-telescope/telescope.nvim', tag = '0.1.1',
+    requires = { {'nvim-lua/plenary.nvim'} }
   }
 
   -- LSP
-  -- mason for installing lsp servers
+  -- Mason for installing lsp servers
   use {
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
@@ -37,6 +39,17 @@ return require('packer').startup(function(use, use_rocks)
   use 'hrsh7th/vim-vsnip'
   use 'onsails/lspkind-nvim'
 
+  -- Treesitter for syntax highlight
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = function()
+      local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+      ts_update()
+    end,
+  }
+
+  -- Terminal
+  use {"akinsho/toggleterm.nvim", tag = '*' }
 
   -- status line
   use {
