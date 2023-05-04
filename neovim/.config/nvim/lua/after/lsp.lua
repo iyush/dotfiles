@@ -96,32 +96,15 @@ require("mason-lspconfig").setup_handlers {
     }
   end,
 
-  -- specific lua lsp configs
-  -- lua
-  ['sumneko_lua'] = function()
-    require 'lspconfig'.sumneko_lua.setup {
-      capabilities = capabilities,
+  ["clangd"] = function ()
+    require("lspconfig").clangd.setup {
       on_attach = on_attach,
-      settings = {
-        Lua = {
-          runtime = {
-            -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-            version = 'LuaJIT',
-          },
-          diagnostics = {
-            -- Get the language server to recognize the `vim` global
-            globals = { 'vim' },
-          },
-          workspace = {
-            -- Make the server aware of Neovim runtime files
-            library = vim.api.nvim_get_runtime_file("", true),
-          },
-          -- Do not send telemetry data containing a randomized but unique identifier
-          telemetry = {
-            enable = false,
-          },
-        },
-      },
+      capabilities = capabilities,
+      cmd = {
+        "clangd",
+        "--query-driver=/home/aayush/personal/serenity/Toolchain/Local/**/*",
+        "--header-insertion=never"
+      }
     }
-  end,
+  end
 }

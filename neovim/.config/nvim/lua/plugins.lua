@@ -20,7 +20,10 @@ return require('packer').startup(function(use)
   -- Telescope for searching
   use {
     'nvim-telescope/telescope.nvim', tag = '0.1.1',
-    requires = { {'nvim-lua/plenary.nvim'} }
+    requires = { { 'nvim-lua/plenary.nvim' } }
+  }
+  use {
+    "nvim-telescope/telescope-live-grep-args.nvim"
   }
 
   -- LSP
@@ -49,12 +52,12 @@ return require('packer').startup(function(use)
   }
 
   -- Terminal
-  use {"akinsho/toggleterm.nvim", tag = '*' }
+  use { "akinsho/toggleterm.nvim", tag = '*' }
 
   -- status line
   use {
-  'nvim-lualine/lualine.nvim',
-  requires = {'kyazdani42/nvim-web-devicons', opt = true}
+    'nvim-lualine/lualine.nvim',
+    requires = { 'kyazdani42/nvim-web-devicons', opt = true }
   }
 
   -- json parser

@@ -95,10 +95,4 @@ if (isROSWs) then
 	print("ROS WS Detected.............")
 	vim.api.nvim_create_user_command('ROSMergeCC', function() mergeCC() end, {})
 	vim.api.nvim_create_user_command('CompileWS', function() compile_whole_workspace() end, {})
-	vim.api.nvim_create_autocmd({ 'InsertLeave' }, {
-		pattern = { "*.cpp", "*.hpp", "*.c", "*.h" },
-		callback = function()
-			vim.lsp.buf.format({async = true})
-		end
-	})
 end
