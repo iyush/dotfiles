@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+option=$1
+base_path=$2
+
+files=`ls -1d $base_path/*/`
+
+selected=`echo "$files" | fzf`
+
+if [[ -z $selected ]]; then 
+  echo "exiting"
+  exit
+fi
+
+if [[ $option == "code" ]]; then
+  tmux neww "cd $selected && nvim ."
+fi
+
+if [[ $option == "git" ]]; then
+  tmux neww "cd $selected && lazygit"
+fi
