@@ -19,7 +19,7 @@ return require('packer').startup(function(use)
 
   -- Telescope for searching
   use {
-    'nvim-telescope/telescope.nvim', tag = '0.1.1',
+    'nvim-telescope/telescope.nvim', tag = '0.1.4',
     requires = { { 'nvim-lua/plenary.nvim' } }
   }
   use {
@@ -59,7 +59,4 @@ return require('packer').startup(function(use)
     'nvim-lualine/lualine.nvim',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true }
   }
-
-  -- json parser
-  require('packer').use_rocks { 'lunajson' }
 end)
