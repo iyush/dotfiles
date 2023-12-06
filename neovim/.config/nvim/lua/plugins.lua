@@ -12,10 +12,6 @@ return require('packer').startup(function(use)
   use 'lervag/vimtex'
   use 'tpope/vim-surround'
   use 'drewtempelmeyer/palenight.vim'
-  use {
-    'nvim-tree/nvim-tree.lua',
-    requires = 'nvim-tree/nvim-web-devicons'
-  }
 
   -- Telescope for searching
   use {

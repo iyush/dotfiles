@@ -3,8 +3,7 @@ vim.g.mapleader = ','
 vim.api.nvim_set_keymap('n', '<leader><space>', ':nohlsearch<CR>', {nowait = true})
 vim.api.nvim_set_keymap('n', '<leader>p', ':Telescope find_files<CR>', {nowait = true})
 vim.api.nvim_set_keymap('n', '<leader>b', ':Telescope buffers<CR>', {nowait = true} )
-vim.api.nvim_set_keymap('n', '<leader>f', ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", {nowait = true} )
-vim.api.nvim_set_keymap('n', '<leader>B', ":NvimTreeFindFileToggle<CR>", { nowait = true } )
+vim.keymap.set('n', '<leader>f', function() require('telescope.builtin').grep_string({ search = vim.fn.input("Grep > ") }) end)
 
 -- telescope specific
 vim.api.nvim_set_keymap('n', '<leader>th', ':Telescope help_tags<CR>', {nowait = true} )

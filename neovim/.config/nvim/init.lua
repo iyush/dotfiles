@@ -3,7 +3,6 @@ if require("first_load")() then
 end
 
 require('plugins')
-require('nvim-tree')
 require('after')
 
 vim.api.nvim_set_option("clipboard","unnamed")
