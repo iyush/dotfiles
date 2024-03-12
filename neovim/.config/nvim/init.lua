@@ -13,3 +13,8 @@ vim.o.ignorecase = true
 vim.o.mouse = 'a'
 vim.o.relativenumber = true
 vim.o.cursorline = true
+
+
+vim.g.copilot_filetypes = {
+  zig = false,
+}
