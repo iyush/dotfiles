@@ -94,34 +94,46 @@
   programs.firefox.enable = true;
 
   programs.hyprland.enable = true;
+  hardware.bluetooth.enable = true; # enables support for Bluetooth
+  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  fonts.packages = with pkgs; [
+          (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+  ];
+
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    neovim
-    wget
-    discord
-    git
-    kitty
-    wofi
     brightnessctl
-    ranger
-    waybar
-    hyprpaper
-    networkmanager
-    font-awesome
-    stow
-    emacs
-    rustup
     clang
-    ripgrep
-    rclone
+    discord
+    emacs
     fuse3
+    git
+    htop
+    hyprpaper
+    kitty
+    neovim
+    networkmanager
     obsidian
+    ranger
+    rclone
+    ripgrep
+    rustup
+    stow
+    stretchly
+    tmux
+    vscode
+    waybar
+    wget
+    wofi
+    pavucontrol
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -158,7 +170,7 @@
     serviceConfig = {
       Type = "idle";
       User="thinkpad";
-      ExecStart = "${pkgs.rclone}/bin/rclone mount --config /home/thinkpad/.config/rclone/rclone.conf drive: /home/thinkpad/google-drive";
+      ExecStart = "${pkgs.rclone}/bin/rclone mount --config /home/thinkpad/.config/rclone/rclone.conf drive: /home/thinkpad/google-drive --vfs-cache-mode=full --vfs-cache-max-size=150G --vfs-cache-max-age=12h ";
       ExecStop = "/run/wrappers/bin/fusermount -u /home/thinkpad/google-drive";
       Restart = "on-failure";
       RestartSec = 15;
