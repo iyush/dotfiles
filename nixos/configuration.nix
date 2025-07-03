@@ -7,14 +7,19 @@
 {
   imports =
     [ # Include the results of the hardware scan.
+      <nixos-hardware/lenovo/thinkpad/e14/intel/gen4>
       ./hardware-configuration.nix
     ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelPackages = pkgs.linuxPackages_6_15;
 
   boot.initrd.luks.devices."luks-8fc2d3a6-3202-4ab5-894f-682cdd8303ef".device = "/dev/disk/by-uuid/8fc2d3a6-3202-4ab5-894f-682cdd8303ef";
+  
+  boot.resumeDevice = "/dev/disk/by-uuid/8fc2d3a6-3202-4ab5-894f-682cdd8303ef";
+
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -47,9 +52,7 @@
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
 
-  # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -97,7 +100,6 @@
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
 
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -111,6 +113,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     brightnessctl
+    hyprsunset
     clang
     discord
     emacs
@@ -134,6 +137,20 @@
     wget
     wofi
     pavucontrol
+  ];
+
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  
+  programs.dconf.profiles.user.databases = [
+  {
+    settings."org/gnome/desktop/interface" = {
+      gtk-theme = "Adwaita";
+      icon-theme = "Flat-Remix-Red-Dark";
+      font-name = "Noto Sans Medium 11";
+      document-font-name = "Noto Sans Medium 11";
+      monospace-font-name = "Noto Sans Mono Medium 11";
+    };
+  }
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -163,6 +180,18 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # Did you read the comment?
 
+
+    systemd.sleep.extraConfig = ''
+    AllowSuspendThenHibernate=yes
+    HibernateDelaySec=30
+   '';
+
+  services.power-profiles-daemon.enable = true;
+  services.logind.lidSwitch = "suspend-then-hibernate";
+  services.logind.powerKey = "suspend-then-hibernate";
+  services.logind.powerKeyLongPress = "poweroff";
+
+
   systemd.services.rclone = {
     description = "Rclone Mount Service";
     after = [ "network-online.target" ];
@@ -179,5 +208,6 @@
     wantedBy = [ "default.target" ];
     script = ''
     '';
+
   };
 }
