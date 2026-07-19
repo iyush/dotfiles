@@ -7,18 +7,12 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      <nixos-hardware/lenovo/thinkpad/e14/intel/gen4>
       ./hardware-configuration.nix
     ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelPackages = pkgs.linuxPackages_6_15;
-
-  boot.initrd.luks.devices."luks-8fc2d3a6-3202-4ab5-894f-682cdd8303ef".device = "/dev/disk/by-uuid/8fc2d3a6-3202-4ab5-894f-682cdd8303ef";
-  
-  boot.resumeDevice = "/dev/disk/by-uuid/8fc2d3a6-3202-4ab5-894f-682cdd8303ef";
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -28,7 +22,30 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+  enable = true;
+  settings = {
+    main = {
+      rc-manager = "resolvconf";
+      # Force NetworkManager to use keyfile plugin for secrets
+      plugins = "keyfile";
+    };
+  };
+  };
+#  networking.networkmanager.enable = false; # Disable NM
+#networking.wireless = {
+#  enable = true;
+#  # Tell NixOS to read secrets from this secure path at boot
+#  secretsFile = "/etc/nixos/wireless.env";
+#
+#  networks = {
+#    # Use the variables defined inside wireless.env
+#    "@HOME_SSID@" = {
+#      psk = "@HOME_PASSWORD@";
+#    };
+#  };
+#};
+
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
@@ -64,7 +81,7 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -97,6 +114,15 @@
   programs.firefox.enable = true;
 
   programs.hyprland.enable = true;
+
+  # Support dynamically linked binaries such as Python/PyTorch wheels.
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      stdenv.cc.cc.lib
+    ];
+  };
+
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
 
@@ -104,9 +130,14 @@
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  fonts.packages = with pkgs; [
-          (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+  # fonts.packages = with pkgs; [
+  #        (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+  #];
+  fonts.packages = [
+    pkgs.nerd-fonts.jetbrains-mono
   ];
+
+
 
 
   # List packages installed in system profile. To search, run:
@@ -119,27 +150,41 @@
     emacs
     fuse3
     git
+    grim
     htop
     hyprpaper
+    hyprshot
     kitty
+    lazygit
     neovim
     networkmanager
+    networkmanagerapplet
     obsidian
     ranger
     rclone
     ripgrep
     rustup
+    python313
     stow
     stretchly
     tmux
     vscode
     waybar
     wget
+    wl-clipboard
     wofi
+    uv
     pavucontrol
+    quickshell
+    nodejs_24
+    zed-editor
   ];
 
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    EDITOR = "nvim";
+    VISUAL = "nvim";
+  };
   
   programs.dconf.profiles.user.databases = [
   {
@@ -172,14 +217,14 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
-
+  system.stateVersion = "25.05"; # Did you read the comment?
 
     systemd.sleep.extraConfig = ''
     AllowSuspendThenHibernate=yes
@@ -187,10 +232,16 @@
    '';
 
   services.power-profiles-daemon.enable = true;
-  services.logind.lidSwitch = "suspend-then-hibernate";
-  services.logind.powerKey = "suspend-then-hibernate";
-  services.logind.powerKeyLongPress = "poweroff";
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend-then-hibernate";
+    HandlePowerKey = "suspend-then-hibernate";
+    HandlePowerKeyLongPress = "poweroff";
+  };
 
+  # Create the rclone mount point declaratively so the service can mount into it.
+  systemd.tmpfiles.rules = [
+    "d /home/thinkpad/google-drive 0755 thinkpad users - -"
+  ];
 
   systemd.services.rclone = {
     description = "Rclone Mount Service";
@@ -198,8 +249,9 @@
     wants = [ "network-online.target" ];
     serviceConfig = {
       Type = "idle";
-      User="thinkpad";
-      ExecStart = "${pkgs.rclone}/bin/rclone mount --config /home/thinkpad/.config/rclone/rclone.conf drive: /home/thinkpad/google-drive --vfs-cache-mode=full --vfs-cache-max-size=150G --vfs-cache-max-age=12h ";
+      User = "thinkpad";
+      ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p /home/thinkpad/google-drive";
+      ExecStart = "${pkgs.rclone}/bin/rclone mount --config /home/thinkpad/.config/rclone/rclone.conf drive: /home/thinkpad/google-drive --vfs-cache-mode=full --vfs-cache-max-size=150G --vfs-cache-max-age=12h";
       ExecStop = "/run/wrappers/bin/fusermount -u /home/thinkpad/google-drive";
       Restart = "on-failure";
       RestartSec = 15;
@@ -208,6 +260,6 @@
     wantedBy = [ "default.target" ];
     script = ''
     '';
-
-  };
+  
+   };
 }

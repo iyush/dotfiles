@@ -4,8 +4,9 @@
 
 # PATH for laravel export PATH=~/.config/composer/vendor/bin:$PATH 
 
-# Vim
-export EDITOR=vim
+# Editor
+export EDITOR=nvim
+export VISUAL=nvim
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
