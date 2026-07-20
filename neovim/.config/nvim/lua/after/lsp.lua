@@ -1,6 +1,6 @@
 local cmp = require('cmp')
 local lspkind = require('lspkind')
-vim.lsp.set_log_level("debug")
+vim.lsp.log.set_level("debug")
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -84,27 +84,27 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protoc
 
 -- Setup up Mason
 require("mason").setup()
-require("mason-lspconfig").setup()
-require("mason-lspconfig").setup_handlers {
-  function(server_name)
-    require("lspconfig")[server_name].setup {
-      on_attach = on_attach,
-      flags = {
-        debounce_text_changes = 150,
-      },
-      capabilities = capabilities
-    }
-  end,
 
-  ["clangd"] = function ()
-    require("lspconfig").clangd.setup {
-      on_attach = on_attach,
-      capabilities = capabilities,
-      cmd = {
-        "clangd",
-        "--query-driver=/home/aayush/personal/serenity/Toolchain/Local/**/*",
-        "--header-insertion=never"
-      }
-    }
-  end
-}
+-- mason-lspconfig v2 uses Neovim's native vim.lsp.config()/vim.lsp.enable()
+-- API instead of setup_handlers(). Configure defaults before enabling servers.
+vim.lsp.config("*", {
+  on_attach = on_attach,
+  flags = {
+    debounce_text_changes = 150,
+  },
+  capabilities = capabilities,
+})
+
+vim.lsp.config("clangd", {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  cmd = {
+    "clangd",
+    "--query-driver=/home/aayush/personal/serenity/Toolchain/Local/**/*",
+    "--header-insertion=never"
+  }
+})
+
+require("mason-lspconfig").setup({
+  automatic_enable = true,
+})

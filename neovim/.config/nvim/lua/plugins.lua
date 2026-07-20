@@ -1,58 +1,60 @@
--- This file can be loaded by calling `lua require('plugins')` from your init.vim
+local gh = function(repo)
+  return "https://github.com/" .. repo
+end
 
--- Only required if you have packer configured as `opt`
-vim.cmd [[packadd packer.nvim]]
+-- vim.pack has no per-plugin `run` hook like packer. Use PackChanged for
+-- plugins that need work after install/update.
+vim.api.nvim_create_autocmd("PackChanged", {
+  callback = function(ev)
+    local name = ev.data and ev.data.spec and ev.data.spec.name
+    local kind = ev.data and ev.data.kind
 
-return require('packer').startup(function(use)
-  -- theme
-  use { "ellisonleao/gruvbox.nvim" }
+    if name == "nvim-treesitter" and (kind == "install" or kind == "update") then
+      -- Make sure the plugin is loadable before calling its updater.
+      if not ev.data.active then
+        vim.cmd.packadd("nvim-treesitter")
+      end
 
-  -- Packer can manage itself
-  use 'sheerun/vim-polyglot'
-  use 'lervag/vimtex'
-  use 'tpope/vim-surround'
-  use 'drewtempelmeyer/palenight.vim'
+      pcall(function()
+        require("nvim-treesitter.install").update({ with_sync = true })()
+      end)
+    end
+  end,
+})
+
+vim.pack.add({
+  -- theme/syntax/editing
+  gh("ellisonleao/gruvbox.nvim"),
+  gh("sheerun/vim-polyglot"),
+  gh("lervag/vimtex"),
+  gh("tpope/vim-surround"),
+  gh("drewtempelmeyer/palenight.vim"),
 
   -- Telescope for searching
-  use {
-    'nvim-telescope/telescope.nvim', tag = '0.1.4',
-    requires = { { 'nvim-lua/plenary.nvim' } }
-  }
-  use {
-    "nvim-telescope/telescope-live-grep-args.nvim"
-  }
+  { src = gh("nvim-telescope/telescope.nvim"), version = "0.1.4" },
+  gh("nvim-lua/plenary.nvim"),
+  gh("nvim-telescope/telescope-live-grep-args.nvim"),
 
-  -- LSP
-  -- Mason for installing lsp servers
-  use {
-    "williamboman/mason.nvim",
-    "williamboman/mason-lspconfig.nvim",
-  }
-  use 'neovim/nvim-lspconfig'
-  use 'hrsh7th/cmp-nvim-lsp'
-  use 'hrsh7th/cmp-buffer'
-  use 'hrsh7th/cmp-path'
-  use 'hrsh7th/cmp-cmdline'
-  use 'hrsh7th/nvim-cmp'
-  use 'hrsh7th/cmp-vsnip'
-  use 'hrsh7th/vim-vsnip'
-  use 'onsails/lspkind-nvim'
+  -- LSP/completion
+  gh("williamboman/mason.nvim"),
+  gh("williamboman/mason-lspconfig.nvim"),
+  gh("neovim/nvim-lspconfig"),
+  gh("hrsh7th/cmp-nvim-lsp"),
+  gh("hrsh7th/cmp-buffer"),
+  gh("hrsh7th/cmp-path"),
+  gh("hrsh7th/cmp-cmdline"),
+  gh("hrsh7th/nvim-cmp"),
+  gh("hrsh7th/cmp-vsnip"),
+  gh("hrsh7th/vim-vsnip"),
+  gh("onsails/lspkind-nvim"),
 
   -- Treesitter for syntax highlight
-  use {
-    'nvim-treesitter/nvim-treesitter',
-    run = function()
-      local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
-      ts_update()
-    end,
-  }
+  gh("nvim-treesitter/nvim-treesitter"),
 
   -- Terminal
-  use { "akinsho/toggleterm.nvim", tag = '*' }
+  gh("akinsho/toggleterm.nvim"),
 
   -- status line
-  use {
-    'nvim-lualine/lualine.nvim',
-    requires = { 'kyazdani42/nvim-web-devicons', opt = true }
-  }
-end)
+  gh("nvim-lualine/lualine.nvim"),
+  gh("kyazdani42/nvim-web-devicons"),
+}, { confirm = false, load = true })
