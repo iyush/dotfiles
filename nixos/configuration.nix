@@ -32,6 +32,9 @@
     };
   };
   };
+
+  services.tailscale.enable = true;
+
 #  networking.networkmanager.enable = false; # Disable NM
 #networking.wireless = {
 #  enable = true;
@@ -143,6 +146,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    elan
     brightnessctl
     hyprsunset
     clang
@@ -164,7 +168,13 @@
     rclone
     ripgrep
     rustup
-    python313
+
+    (python313.withPackages (ps: with ps; [
+       marimo
+       numpy
+       pandas
+    ]))
+
     stow
     stretchly
     tmux
@@ -178,6 +188,7 @@
     quickshell
     nodejs_24
     zed-editor
+    zathura
   ];
 
   environment.sessionVariables = {
